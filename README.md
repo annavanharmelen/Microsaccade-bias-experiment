@@ -1,11 +1,11 @@
-# NULL-CUE GAZE BIAS EXPERIMENT
+# MICROSACCADE BIAS EXPERIMENT
 
 # ***[work in progress]***
 
-A temporal visuo-motor working memory task, designed to measure gaze bias during a non-informative retro cue, programmed in Python.
+An orientation change detection task, designed to measure microsaccade bias during attentional bias, programmed in Python.
 
 ## Author
-Made by Anna van Harmelen in 2023, based on code by Rose Nasrawi, see: [TemporalAction-main](https://github.com/rosenasrawi/TemporalAction).
+Made by Anna van Harmelen in 2023, based on own earlier code, see: [Null cue gaze bias experiment](https://github.com/annavanharmelen/Null-cue-gaze-bias-experiment).
 
 ## Installation
 This experiment was created using the [PsychoPy library](https://www.psychopy.org), e.g. follow [these instructions](https://www.psychopy.org/download.html).
@@ -22,8 +22,6 @@ pip install --index-url=https://pypi.sr-support.com sr-research-pylink
 
 ## Configuration
 To make sure the experiment runs correctly, open the set_up.py file to enter the correct specifications of your monitor and set-up on lines 17-35.
-
-Two versions of this experiment exist. The most recent version runs when working on the main branch, the older version is available on the branch "Square-capture-cue".
 
 ## Running
 The experiment runs in its entirety (including some explanation, practice trials and breaks) if you run `python main.py`.
