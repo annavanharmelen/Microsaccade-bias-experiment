@@ -13,6 +13,36 @@ import random
 import pandas as pd
 import datetime as dt
 
+window = visual.Window(color=[0, 0.6, 1], size=[1920, 1080], units="pix", fullscr=True)
+
+gabor_stimulus = visual.GratingStim(
+    win = window,
+    units="pix",
+    size=(500, 500),
+    pos=(0,0),
+    tex="sin",
+    mask="gauss",
+    sf=(0.01, 0.0002),
+)
+
+circle = visual.Circle(
+    win=window,
+    units="pix",
+    size=(500,500),
+    pos=(0,0),
+    fillColor=[1,1,1,0],
+    lineColor=[1,0,0,1]
+)
+
+circle.draw()
+gabor_stimulus.draw()
+window.flip()
+time.sleep(10)
+
+# stop here
+import sys
+sys.exit()
+
 monitor = {
         "resolution": (1920, 1080),  # in pixels
         "Hz": 239,  # screen refresh rate in Hz
@@ -24,11 +54,6 @@ degrees_per_pixel = degrees(atan2(0.5 * monitor["width"], monitor["distance"])) 
     0.5 * monitor["resolution"][0]
 )
 
-print(degrees_per_pixel)
-
-# stop here
-import sys
-sys.exit()
 
 current_block = 3
 blocks_left = 1
