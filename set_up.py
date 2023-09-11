@@ -1,7 +1,7 @@
 """
 This file contains the functions necessary for
 seting up the computer.
-To run the 'null-cue gaze bias' experiment, see main.py.
+To run the 'microsaccade bias' experiment, see main.py.
 
 made by Anna van Harmelen, 2023
 """

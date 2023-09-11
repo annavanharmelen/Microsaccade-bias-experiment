@@ -1,6 +1,6 @@
 """
 This script is used to test random aspects
-of the 'null-cue gaze bias' experiment.
+of the 'microsaccade bias' experiment.
 
 made by Anna van Harmelen, 2023
 """

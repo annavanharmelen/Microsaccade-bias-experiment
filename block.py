@@ -1,7 +1,7 @@
 """
 This file contains the functions necessary for
 creating and running a full block of trials start-to-finish.
-To run the 'null-cue gaze bias' experiment, see main.py.
+To run the 'microsaccade bias' experiment, see main.py.
 
 made by Anna van Harmelen, 2023
 """
