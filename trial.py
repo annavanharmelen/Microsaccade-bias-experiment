@@ -20,13 +20,11 @@ from eyetracker import get_trigger
 import random
 
 # experiment flow:
-# 1. fixatiekruis
-# 2. fixatiekruis + twee blokkies ernaast
-# 3. fixatiekruis
-# 4. fixatiekruis + vierkantje om het kruis
-# 5. fixatiekruis
-# 6. probecue
-# 7. dials voor respons van proefpersoon
+# 1. fixation point
+# 2. fixation point + stimuli
+# 3. fixation point + stimuli, one of which changed orientation
+# 4. probe?
+# 5. response possible
 
 COLOURS = ["#ff99ac", "#f5e2a3", "#a8f0d1", "#99ceff"]
 
