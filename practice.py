@@ -11,7 +11,7 @@ from trial import (
     generate_stimuli_characteristics,
     show_text,
 )
-from stimuli import make_one_bar, create_fixation_cross
+from stimuli import make_one_gabor, create_fixation_cross
 from response import get_response, wait_for_key
 from psychopy import event
 from psychopy.hardware.keyboard import Keyboard
@@ -41,7 +41,7 @@ def practice(testing, settings):
             target_orientation = target["target_orientation"]
             target_colour = None
 
-            practice_bar = make_one_bar(
+            practice_bar = make_one_gabor(
                 target_orientation, "#eaeaea", "middle", settings
             )
 
