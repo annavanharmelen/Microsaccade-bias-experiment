@@ -22,14 +22,15 @@ def create_block(n_trials):
     return trials
 
 
-def block_break(current_block, n_blocks, settings, eyetracker):
+def block_break(current_block, n_blocks, avg_score, settings, eyetracker):
     blocks_left = n_blocks - current_block
 
     show_text(
-        f"You just finished block {current_block}, you {'only ' if blocks_left == 1 else ''}"
+        f"Your average score on the previous block was {avg_score}. "
+        f"\n\nYou just finished block {current_block}, you {'only ' if blocks_left == 1 else ''}"
         f"have {blocks_left} block{'s' if blocks_left != 1 else ''} left. "
         "Take a break if you want to, but try not to move your head during this break."
-        "\nPress SPACE when you're ready to continue.",
+        "\n\nPress SPACE when you're ready to continue.",
         settings["window"],
     )
     settings["window"].flip()
@@ -46,11 +47,12 @@ def block_break(current_block, n_blocks, settings, eyetracker):
     return False
 
 
-def long_break(n_blocks, settings, eyetracker):
+def long_break(n_blocks, avg_score, settings, eyetracker):
     show_text(
-        f"You're halfway through! You have {n_blocks // 2} blocks left. "
+        f"Your average score on the previous block was {avg_score}. "
+        f"\n\nYou're halfway through! You have {n_blocks // 2} blocks left. "
         "Now is the time to take a longer break. Maybe get up, stretch, walk around."
-        "\nPress SPACE whenever you're ready to continue again.",
+        "\n\nPress SPACE whenever you're ready to continue again.",
         settings["window"],
     )
     settings["window"].flip()
