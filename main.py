@@ -13,6 +13,7 @@ from set_up import get_monitor_and_dir, get_settings
 from eyetracker import Eyelinker
 from trial import single_trial, generate_stimuli_characteristics
 from time import time
+from numpy import mean
 from practice import practice
 import datetime as dt
 from block import create_block, block_break, long_break, finish, quick_finish
@@ -61,7 +62,7 @@ def main():
         eyelinker.calibrate()
 
     # Practice until participant wants to stop
-    practice(testing, settings)
+    # practice(testing, settings)
 
     # Initialise some stuff
     start_of_experiment = time()
@@ -78,6 +79,9 @@ def main():
         for block in range(2 if testing else N_BLOCKS):
             # Pseudo-randomly create conditions and target locations (so they're weighted)
             block_info = create_block(6 if testing else TRIALS_PER_BLOCK)
+
+            # Create temporary variable for saving block performance
+            block_performance = []
 
             # Run trials per pseudo-randomly created info
             for condition, target_bar in block_info:
@@ -113,17 +117,33 @@ def main():
                     }
                 )
 
+                block_performance.append(report["performance"])
+
+            # Calculate average performance score for most recent block
+            avg_score = round(mean(block_performance))
+
             # Break after end of block, unless it's the last block.
             # Experimenter can re-calibrate the eyetracker by pressing 'c' here.
             calibrated = True
             if block + 1 == N_BLOCKS // 2:
                 while calibrated:
-                    calibrated = long_break(N_BLOCKS, settings, eyetracker=None if testing else eyelinker)
+                    calibrated = long_break(
+                        N_BLOCKS,
+                        avg_score,
+                        settings,
+                        eyetracker=None if testing else eyelinker,
+                    )
                 if not testing:
                     eyelinker.start()
             elif block + 1 < N_BLOCKS:
                 while calibrated:
-                    calibrated = block_break(block + 1, N_BLOCKS, settings, eyetracker=None if testing else eyelinker)
+                    calibrated = block_break(
+                        block + 1,
+                        N_BLOCKS,
+                        avg_score,
+                        settings,
+                        eyetracker=None if testing else eyelinker,
+                    )
 
         finished_early = False
 
@@ -139,7 +159,9 @@ def main():
         )
 
         # Register how many trials this participant has completed
-        new_participants.loc[new_participants.index[-1], "trials_completed"] = str(len(data))
+        new_participants.loc[new_participants.index[-1], "trials_completed"] = str(
+            len(data)
+        )
 
         # Save participant data to existing .csv file
         new_participants.to_csv(
@@ -150,11 +172,10 @@ def main():
         if finished_early:
             quick_finish(settings)
         else:
+            # Thanks for meedoen
             finish(N_BLOCKS, settings)
 
         core.quit()
-
-    # Thanks for meedoen
 
 
 if __name__ == "__main__":
