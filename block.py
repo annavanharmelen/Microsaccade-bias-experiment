@@ -11,15 +11,20 @@ from response import wait_for_key
 
 
 def create_block(n_trials):
-    if n_trials % 6 != 0:
-        raise Exception("Expected number of trials to be divisible by 6.")
+    if n_trials % 10 != 0:
+        raise Exception("Expected number of trials to be divisible by 10.")
 
-    trials = (n_trials // 6) * list(
-        zip(2 * ["neutral", "congruent", "incongruent"], 3 * ["left", "right"])
-    )
-    random.shuffle(trials)
+    # Create random, but equal distribution of target locations
+    locations = n_trials // 10 * 5 * ["left", "right"]
+    random.shuffle(locations)
+    
+    # Create 10% incongruent trials
+    congruencies = n_trials // 10 * (9 * ["congruent"] + ["incongruent"])
+    random.shuffle(congruencies)
 
-    return trials
+    trials = zip(congruencies, locations)
+
+    return list(trials)
 
 
 def block_break(current_block, n_blocks, avg_score, settings, eyetracker):

@@ -19,7 +19,7 @@ import datetime as dt
 from block import create_block, block_break, long_break, finish, quick_finish
 
 N_BLOCKS = 16
-TRIALS_PER_BLOCK = 48
+TRIALS_PER_BLOCK = 50
 
 
 def main():
@@ -78,7 +78,7 @@ def main():
     try:
         for block in range(2 if testing else N_BLOCKS):
             # Pseudo-randomly create conditions and target locations (so they're weighted)
-            block_info = create_block(6 if testing else TRIALS_PER_BLOCK)
+            block_info = create_block(10 if testing else TRIALS_PER_BLOCK)
 
             # Create temporary variable for saving block performance
             block_performance = []
