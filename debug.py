@@ -13,6 +13,25 @@ import random
 import pandas as pd
 import datetime as dt
 
+n_trials = 50
+
+# Create random, but equal distribution of target locations
+locations = n_trials // 10 * 5 * ["left", "right"]
+random.shuffle(locations)
+
+# Create 10% incongruent trials
+congruencies = n_trials // 10 * (9 * ["congruent"] + ["incongruent"])
+print(congruencies)
+
+random.shuffle(congruencies)
+
+print(congruencies)
+
+# stop here
+import sys
+sys.exit()
+
+
 window = visual.Window(color=[0, 0.6, 1], size=[1920, 1080], units="pix", fullscr=True)
 
 gabor_stimulus = visual.GratingStim(
@@ -38,10 +57,6 @@ circle.draw()
 gabor_stimulus.draw()
 window.flip()
 time.sleep(10)
-
-# stop here
-import sys
-sys.exit()
 
 monitor = {
         "resolution": (1920, 1080),  # in pixels
