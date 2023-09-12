@@ -9,7 +9,7 @@ made by Anna van Harmelen, 2023
 from psychopy import visual
 
 ECCENTRICITY = 6
-BAR_SIZE = [4, 4]  # width, height
+GABOR_SIZE = [4, 4]  # width, height
 CAPTURE_CUE_SIZE = 0.7  # diameter of circle
 
 
@@ -51,12 +51,13 @@ def make_one_gabor(orientation, colour, position, settings):
     gabor_stimulus = visual.GratingStim(
         win=settings["window"],
         units="pix",
-        size=(settings["deg2pix"](BAR_SIZE[0]), settings["deg2pix"](BAR_SIZE[1])),
+        size=(settings["deg2pix"](GABOR_SIZE[0]), settings["deg2pix"](GABOR_SIZE[1])),
         pos=pos,
+        color=colour,
         ori=orientation,
         tex="sin",
         mask="gauss",
-        sf=(settings["deg2pix"](BAR_SIZE[0])/10000, settings["deg2pix"](BAR_SIZE[0])/2500000),
+        sf=(settings["deg2pix"](GABOR_SIZE[0])/10000, settings["deg2pix"](GABOR_SIZE[0])/2500000),
     )
 
     return gabor_stimulus
