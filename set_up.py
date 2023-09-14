@@ -21,7 +21,7 @@ def get_monitor_and_dir(testing: bool):
             "distance": 50,  # in cm
         }
 
-        directory = r"C:\Users\annav\Documents\Jottacloud\Neuroscience PhD\Experiments\microsaccade bias experiments\Data\test"
+        directory = r"C:\Users\annav\Documents\Jottacloud\Neuroscience PhD\Experiments\Microsaccade bias experiments\Data\test"
 
     else:
         # lab
