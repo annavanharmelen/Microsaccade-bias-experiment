@@ -8,7 +8,7 @@ made by Anna van Harmelen, 2023
 
 from trial import (
     single_trial,
-    generate_stimuli_characteristics,
+    generate_trial_characteristics,
     show_text,
 )
 from stimuli import make_one_gabor, create_fixation_cross
@@ -37,7 +37,7 @@ def practice(testing, settings):
         while True:
             target_bar = random.choice(["left", "right"])
             condition = "neutral"
-            target = generate_stimuli_characteristics(condition, target_bar)
+            target = generate_trial_characteristics(condition, target_bar)
             target_orientation = target["target_orientation"]
             target_colour = None
 
@@ -81,7 +81,7 @@ def practice(testing, settings):
             target_bar = random.choice(["left", "right"])
             condition = random.choice(["congruent", "incongruent", "neutral"])
 
-            stimulus = generate_stimuli_characteristics(condition, target_bar)
+            stimulus = generate_trial_characteristics(condition, target_bar)
 
             report: dict = single_trial(**stimulus, settings=settings, testing=True)
 
