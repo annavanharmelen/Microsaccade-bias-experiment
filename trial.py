@@ -100,7 +100,7 @@ def single_trial(
             "capture_cue_onset",
         ),
         (
-            static_duration/1000,
+            static_duration / 1000,
             lambda: create_stimuli_frame(
                 left_orientation, right_orientation, stimuli_colours, settings
             ),
@@ -109,7 +109,7 @@ def single_trial(
         (
             0.25,
             lambda: create_stimuli_frame(
-                left_orientation, right_orientation+30, stimuli_colours, settings
+                left_orientation, right_orientation + 30, stimuli_colours, settings
             ),
             "stimuli_onset",
         ),
@@ -119,7 +119,6 @@ def single_trial(
     ]
 
     # !!! The timing you pass to do_while_showing is the timing for the previously drawn screen. !!!
-
     for index, (duration, _, frame) in enumerate(screens[:-1]):
         # Send trigger if not testing
         if not testing and frame:
