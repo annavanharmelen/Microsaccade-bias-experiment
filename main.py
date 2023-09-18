@@ -50,6 +50,7 @@ def main():
 
     # Initialise set-up
     settings = get_settings(monitor, directory)
+    settings["keyboard"].clearEvents()
 
     # Connect to eyetracker and calibrate it
     if not testing:
@@ -146,6 +147,10 @@ def main():
                     )
 
         finished_early = False
+
+    except Exception as e:
+        if not isinstance(e, KeyboardInterrupt):
+            print(e)
 
     finally:
         # Stop eyetracker (this should also save the data)

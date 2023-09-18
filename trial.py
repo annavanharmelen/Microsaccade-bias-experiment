@@ -10,7 +10,7 @@ made by Anna van Harmelen, 2023
 from psychopy import visual
 from psychopy.core import wait
 from time import time, sleep
-from response import get_response
+from response import get_response, check_quit
 from stimuli import (
     create_fixation_cross,
     create_capture_cue_frame,
@@ -115,6 +115,9 @@ def single_trial(
         if not testing and frame:
             trigger = get_trigger(frame, trial_condition, target_bar)
             eyetracker.tracker.send_message(f"trig{trigger}")
+
+        # Check for pressed 'q'
+        check_quit(settings["keyboard"])
 
         # Draw the next screen while showing the current one
         do_while_showing(duration, screens[index + 1][1], settings["window"])
