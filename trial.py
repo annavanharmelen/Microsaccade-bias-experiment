@@ -13,7 +13,7 @@ from time import time, sleep
 from response import get_response, check_quit
 from stimuli import (
     create_fixation_cross,
-    create_capture_cue_frame,
+    create_cue_frame,
     create_stimuli_frame,
 )
 from eyetracker import get_trigger
@@ -21,15 +21,16 @@ import random
 
 # experiment flow:
 # 1. fixation point
-# 2. fixation point + stimuli
-# 3. fixation point + stimuli, one of which changed orientation
-# 4. probe?
-# 5. response possible
+# 2. cue (90% predictable)
+# 3. fixation point + stimuli, of variable duration
+# 4. fixation point + stimuli, one of which changed orientation
+# 5. probe?
+# 6. response possible
 
 COLOURS = ["#ff99ac", "#f5e2a3", "#a8f0d1", "#99ceff"]
 
 
-def generate_stimuli_characteristics(condition, target_bar):
+def generate_trial_characteristics(condition: str, target_bar: str, duration):
     stimuli_colours = random.sample(COLOURS, 2)
 
     orientations = [
@@ -50,6 +51,7 @@ def generate_stimuli_characteristics(condition, target_bar):
         capture_colour = distractor_colour
 
     return {
+        "static_duration": duration,
         "stimuli_colours": stimuli_colours,
         "capture_colour": capture_colour,
         "trial_condition": condition,
@@ -73,6 +75,7 @@ def do_while_showing(waiting_time, something_to_do, window):
 
 
 def single_trial(
+    static_duration,
     left_orientation,
     right_orientation,
     target_bar,
@@ -93,17 +96,24 @@ def single_trial(
         (0.5, lambda: create_fixation_cross(settings), None),
         (
             0.25,
+            lambda: create_cue_frame(capture_colour, settings),
+            "capture_cue_onset",
+        ),
+        (
+            static_duration/1000,
             lambda: create_stimuli_frame(
                 left_orientation, right_orientation, stimuli_colours, settings
             ),
             "stimuli_onset",
         ),
-        (0.75, lambda: create_fixation_cross(settings), None),
         (
             0.25,
-            lambda: create_capture_cue_frame(capture_colour, settings),
-            "capture_cue_onset",
+            lambda: create_stimuli_frame(
+                left_orientation, right_orientation+30, stimuli_colours, settings
+            ),
+            "stimuli_onset",
         ),
+        (0.75, lambda: create_fixation_cross(settings), None),
         (1.25, lambda: create_fixation_cross(settings), None),
         (None, lambda: create_fixation_cross(settings, target_colour), None),
     ]
