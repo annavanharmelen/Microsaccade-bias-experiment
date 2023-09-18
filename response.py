@@ -111,17 +111,24 @@ def get_response(
     keyboard: Keyboard = settings["keyboard"]
     window = settings["window"]
 
-    keyboard.clearEvents()
     turns = 0
 
     for item in additional_objects:
         item.draw()
         window.flip()
 
+    # Check for pressed 'q'
+    check_quit(keyboard)
+
+    # These timing systems should start at the same time, this is almost true
     idle_reaction_time_start = time()
+    keyboard.clock.reset()
+
+    # Check if _any_ keys were prematurely pressed
+    prematurely_pressed = [(p.name, p.rt) for p in keyboard.getKeys()]
+    keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    keyboard.clearEvents()  # do it again to be sure
     pressed = event.waitKeys(keyList=["z", "m", "q"])
 
     response_started = time()
@@ -164,11 +171,15 @@ def get_response(
 
     response_time = time() - response_started
 
+    # Make sure keystrokes made during this trial don't influence the next
+    keyboard.clearEvents()
+
     return {
         "idle_reaction_time_in_ms": round(idle_reaction_time * 1000, 2),
         "response_time_in_ms": round(response_time * 1000, 2),
         "key_pressed": key,
         "turns_made": turns,
+        "premature_keys": prematurely_pressed[0] if prematurely_pressed else None,
         **evaluate_response(
             get_report_orientation(key, turns, settings["dial_step_size"]),
             target_orientation,
@@ -183,3 +194,8 @@ def wait_for_key(key_list, keyboard):
     keys = event.waitKeys(keyList=key_list)
 
     return keys
+
+
+def check_quit(keyboard):
+    if keyboard.getKeys("q"):
+        raise KeyboardInterrupt()
