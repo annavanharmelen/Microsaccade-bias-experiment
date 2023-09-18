@@ -14,11 +14,14 @@ import random
 import pandas as pd
 import datetime as dt
 
-# clear keyboard events
-# press key
-# eventjes wachten
-# do getkeys op die key
-# kijken of hij er naar luistert 
+durations = list(range(500, 3000, 50))
+random.shuffle(durations)
+print(durations)
+
+# stop here
+import sys
+sys.exit()
+
 
 keyboard: Keyboard =Keyboard()
 keyboard.clearEvents()
@@ -28,11 +31,6 @@ print("TE LAAT")
 keyboard.clock.reset()
 pressed = keyboard.getKeys()
 print([(p.name, p.rt) for p in pressed])
-
-
-# stop here
-import sys
-sys.exit()
 
 
 n_trials = 50
