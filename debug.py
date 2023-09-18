@@ -6,12 +6,34 @@ made by Anna van Harmelen, 2023
 """
 
 from psychopy import visual
+from psychopy.hardware.keyboard import Keyboard
 from math import atan2, degrees
 import time
 import random
 #from set_up import set_up
 import pandas as pd
 import datetime as dt
+
+# clear keyboard events
+# press key
+# eventjes wachten
+# do getkeys op die key
+# kijken of hij er naar luistert 
+
+keyboard: Keyboard =Keyboard()
+keyboard.clearEvents()
+print("Druk NU je toets in")
+time.sleep(3)
+print("TE LAAT")
+keyboard.clock.reset()
+pressed = keyboard.getKeys()
+print([(p.name, p.rt) for p in pressed])
+
+
+# stop here
+import sys
+sys.exit()
+
 
 n_trials = 50
 
@@ -27,9 +49,6 @@ random.shuffle(congruencies)
 
 print(congruencies)
 
-# stop here
-import sys
-sys.exit()
 
 
 window = visual.Window(color=[0, 0.6, 1], size=[1920, 1080], units="pix", fullscr=True)
