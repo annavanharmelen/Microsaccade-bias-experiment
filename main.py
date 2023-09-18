@@ -11,7 +11,7 @@ import pandas as pd
 from participantinfo import get_participant_details
 from set_up import get_monitor_and_dir, get_settings
 from eyetracker import Eyelinker
-from trial import single_trial, generate_stimuli_characteristics
+from trial import single_trial, generate_trial_characteristics
 from time import time
 from numpy import mean
 from practice import practice
@@ -85,17 +85,17 @@ def main():
             block_performance = []
 
             # Run trials per pseudo-randomly created info
-            for condition, target_bar in block_info:
+            for condition, target_location, trial_length in block_info:
                 current_trial += 1
                 start_time = time()
 
-                stimuli_characteristics: dict = generate_stimuli_characteristics(
-                    condition, target_bar
+                trial_characteristics: dict = generate_trial_characteristics(
+                    condition, target_location, trial_length
                 )
 
                 # Generate trial
                 report: dict = single_trial(
-                    **stimuli_characteristics,
+                    **trial_characteristics,
                     settings=settings,
                     testing=testing,
                     eyetracker=None if testing else eyelinker,
@@ -113,7 +113,7 @@ def main():
                         "end_time": str(
                             dt.timedelta(seconds=(end_time - start_of_experiment))
                         ),
-                        **stimuli_characteristics,
+                        **trial_characteristics,
                         **report,
                     }
                 )
