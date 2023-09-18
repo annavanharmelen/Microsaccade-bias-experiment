@@ -69,7 +69,7 @@ def create_stimuli_frame(left_orientation, right_orientation, colours, settings)
     make_one_gabor(right_orientation, colours[1], "right", settings).draw()
 
 
-def create_capture_cue_frame(colour, settings):
+def create_cue_frame(colour, settings):
     capture_cue = visual.Circle(
         win=settings["window"],
         units="pix",
