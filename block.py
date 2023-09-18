@@ -22,7 +22,12 @@ def create_block(n_trials):
     congruencies = n_trials // 10 * (9 * ["congruent"] + ["incongruent"])
     random.shuffle(congruencies)
 
-    trials = zip(congruencies, locations)
+    # Generate random trial lengths
+    durations = list(range(500, 3000, 50))
+    random.shuffle(durations)
+
+    # Create trial parameters for all trials in one block
+    trials = zip(congruencies, locations, durations)
 
     return list(trials)
 
