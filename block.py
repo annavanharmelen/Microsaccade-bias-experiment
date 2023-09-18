@@ -85,6 +85,7 @@ def finish(n_blocks, settings):
 
 
 def quick_finish(settings):
+    settings["window"].flip()
     show_text(
         f"You've exited the experiment. Press SPACE to close this window.",
         settings["window"],
