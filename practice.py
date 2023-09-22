@@ -45,17 +45,6 @@ def practice(testing, settings):
                 target_orientation, "#eaeaea", "middle", settings
             )
 
-            report: dict = get_response(
-                target_orientation,
-                target_colour,
-                settings,
-                testing,
-                None,
-                1,
-                target_bar,
-                [practice_bar],
-            )
-
             create_fixation_cross(settings)
             show_text(
                 f"{report['performance']}",
