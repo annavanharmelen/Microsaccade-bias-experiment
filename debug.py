@@ -10,15 +10,45 @@ from psychopy.hardware.keyboard import Keyboard
 from math import atan2, degrees
 import time
 import random
+from numpy import ones, zeros, unique
 
 # from set_up import set_up
 import pandas as pd
 import datetime as dt
 
+window = visual.Window(color='#7F7F7F', size=[1920, 1080], units="pix", fullscr=True)
+
+# bitmap = zeros([256,256,3],'f')
+# bitmap[:,:,0] = visual.filters.makeGrating(256,gratType='sin')
+# bitmap[:,:,1] = -0.003
+# bitmap[:,:,2] = -0.003
+# print(unique(bitmap[:,:,0]))
+
+bitmap = ones([256,256,4],'f')
+bitmap[:,:,0] = 1
+bitmap[:,:,1] = -1
+bitmap[:,:,2] = -1
+bitmap[:,:,3] = visual.filters.makeGrating(256,gratType='sin',cycles=4.5)
+print(unique(bitmap[:,:,0]))
+
+gabor_stimulus = visual.GratingStim(
+    win=window,
+    units="pix",
+    size=(500, 500),
+    pos=(0, 0),
+    tex=bitmap,
+    mask="raisedCos",
+    maskParams={"fringeWidth": 0.5}
+)
+
+gabor_stimulus.draw()
+window.flip()
+time.sleep(5)
+
 # stop here
 import sys
-
 sys.exit()
+
 
 durations = list(range(500, 3000, 50))
 random.shuffle(durations)
