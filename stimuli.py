@@ -7,9 +7,11 @@ made by Anna van Harmelen, 2023
 """
 
 from psychopy import visual
+from numpy import zeros
 
 ECCENTRICITY = 6
-GABOR_SIZE = [4, 4]  # width, height
+VERTICAL_POSITION = -2
+GABOR_SIZE = 4  # diameter of Gabor
 CAPTURE_CUE_SIZE = 0.7  # diameter of circle
 
 
@@ -39,25 +41,40 @@ def create_fixation_cross(settings, colour="#eaeaea"):
 def make_one_gabor(orientation, colour, position, settings):
     # Check input
     if position == "left":
-        pos = (-settings["deg2pix"](ECCENTRICITY), 0)
+        pos = (
+            -settings["deg2pix"](ECCENTRICITY),
+            settings["deg2pix"](VERTICAL_POSITION),
+        )
     elif position == "right":
-        pos = (settings["deg2pix"](ECCENTRICITY), 0)
+        pos = (
+            settings["deg2pix"](ECCENTRICITY),
+            settings["deg2pix"](VERTICAL_POSITION),
+        )
     elif position == "middle":
         pos = (0, 0)
     else:
         raise Exception(f"Expected 'left' or 'right', but received {position!r}. :(")
 
-    # Create gabor grating stimulus
+    # Create texture for Gabor stimulus
+    gabor_texture = zeros(
+        [settings["deg2pix"](GABOR_SIZE), settings["deg2pix"](GABOR_SIZE), 4], "f"
+    )
+    gabor_texture[:, :, 0] = colour[0]
+    gabor_texture[:, :, 1] = colour[1]
+    gabor_texture[:, :, 2] = colour[2]
+    gabor_texture[:, :, 3] = -visual.filters.makeGrating(
+        settings["deg2pix"](GABOR_SIZE), gratType="sin", cycles=4.5, ori=orientation
+    )
+
+    # Create Gabor grating stimulus
     gabor_stimulus = visual.GratingStim(
         win=settings["window"],
         units="pix",
-        size=(settings["deg2pix"](GABOR_SIZE[0]), settings["deg2pix"](GABOR_SIZE[1])),
+        size=(settings["deg2pix"](GABOR_SIZE), settings["deg2pix"](GABOR_SIZE)),
         pos=pos,
-        color=colour,
-        ori=orientation,
-        tex="sin",
-        mask="gauss",
-        sf=(settings["deg2pix"](GABOR_SIZE[0])/10000, settings["deg2pix"](GABOR_SIZE[0])/2500000),
+        tex=gabor_texture,
+        mask="raisedCos",
+        maskParams={"fringeWidth": 0.5},
     )
 
     return gabor_stimulus
