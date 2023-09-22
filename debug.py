@@ -10,20 +10,21 @@ from psychopy.hardware.keyboard import Keyboard
 from math import atan2, degrees
 import time
 import random
-#from set_up import set_up
+
+# from set_up import set_up
 import pandas as pd
 import datetime as dt
+
+# stop here
+import sys
+
+sys.exit()
 
 durations = list(range(500, 3000, 50))
 random.shuffle(durations)
 print(durations)
 
-# stop here
-import sys
-sys.exit()
-
-
-keyboard: Keyboard =Keyboard()
+keyboard: Keyboard = Keyboard()
 keyboard.clearEvents()
 print("Druk NU je toets in")
 time.sleep(3)
@@ -48,14 +49,13 @@ random.shuffle(congruencies)
 print(congruencies)
 
 
-
 window = visual.Window(color=[0, 0.6, 1], size=[1920, 1080], units="pix", fullscr=True)
 
 gabor_stimulus = visual.GratingStim(
-    win = window,
+    win=window,
     units="pix",
     size=(500, 500),
-    pos=(0,0),
+    pos=(0, 0),
     tex="sin",
     mask="gauss",
     sf=(0.01, 0.0002),
@@ -64,10 +64,10 @@ gabor_stimulus = visual.GratingStim(
 circle = visual.Circle(
     win=window,
     units="pix",
-    size=(500,500),
-    pos=(0,0),
-    fillColor=[1,1,1,0],
-    lineColor=[1,0,0,1]
+    size=(500, 500),
+    pos=(0, 0),
+    fillColor=[1, 1, 1, 0],
+    lineColor=[1, 0, 0, 1],
 )
 
 circle.draw()
@@ -76,11 +76,11 @@ window.flip()
 time.sleep(10)
 
 monitor = {
-        "resolution": (1920, 1080),  # in pixels
-        "Hz": 239,  # screen refresh rate in Hz
-        "width": 53,  # in cm
-        "distance": 70,  # in cm
-    }
+    "resolution": (1920, 1080),  # in pixels
+    "Hz": 239,  # screen refresh rate in Hz
+    "width": 53,  # in cm
+    "distance": 70,  # in cm
+}
 
 degrees_per_pixel = degrees(atan2(0.5 * monitor["width"], monitor["distance"])) / (
     0.5 * monitor["resolution"][0]
@@ -89,7 +89,9 @@ degrees_per_pixel = degrees(atan2(0.5 * monitor["width"], monitor["distance"])) 
 
 current_block = 3
 blocks_left = 1
-print(f"You just finished block {current_block}, you{' only' if blocks_left == 1 else ''} have {blocks_left} block{'s' if blocks_left != 1 else ''} left.")
+print(
+    f"You just finished block {current_block}, you{' only' if blocks_left == 1 else ''} have {blocks_left} block{'s' if blocks_left != 1 else ''} left."
+)
 
 
 og_start = time.time()
@@ -102,10 +104,9 @@ trial2_done = time.time()
 
 trial1_length = trial1_done - start
 trial2_length = trial2_done - trial1_done
-print(dt.timedelta(seconds = trial1_length))
-print(dt.timedelta(seconds = trial2_length))
-print(dt.timedelta(seconds = (time.time() - og_start)))
-
+print(dt.timedelta(seconds=trial1_length))
+print(dt.timedelta(seconds=trial2_length))
+print(dt.timedelta(seconds=(time.time() - og_start)))
 
 
 temp = random.sample([[0, 0.6, 1], [0.8, 0.2, 0.2], [0, 0.8, 0.4], [0.9, 0.8, 0.3]], 2)
@@ -113,15 +114,15 @@ print(temp)
 print(type(temp))
 
 
-test_data = pd.DataFrame({"number": [1, 2, 3], "fruits": ['apples', 'bananas', 'cactus']})
+test_data = pd.DataFrame(
+    {"number": [1, 2, 3], "fruits": ["apples", "bananas", "cactus"]}
+)
 print(test_data)
 
-#test_data.fruits.iloc[-1] = 'citroen'
-#test_data.loc[:, ('one', 'second')] = value
+# test_data.fruits.iloc[-1] = 'citroen'
+# test_data.loc[:, ('one', 'second')] = value
 test_data.loc[test_data.index[-1], "fruits"] = "citroen"
 print(test_data)
-
-
 
 
 set_up(True)
@@ -134,6 +135,8 @@ print(global_state)
 def deg2pix(deg):
     dpix = degrees(atan2(0.5 * 17.5, 50)) / (0.5 * 1080)
     return int(deg / dpix)
+
+
 # bovenstaande waardes geven een dpix waarde van 0.018381...
 # en dat is een logische waarde voor aantal visual degrees per pixel op het scherm
 # Dat is ook logisch als je zegt dat de stimulus 1 visual degree moet zijn (see below)
@@ -171,7 +174,7 @@ bar_stimulus_right = visual.Rect(
     height=deg2pix(3),
     pos=[deg2pix(6), 0],
     fillColor="black",
-    ori=random.randint(0,360),
+    ori=random.randint(0, 360),
 )
 
 bar_stimulus_left = visual.Rect(
@@ -181,7 +184,7 @@ bar_stimulus_left = visual.Rect(
     height=deg2pix(3),
     pos=[-deg2pix(6), 0],
     fillColor="black",
-    ori=random.randint(0,360),
+    ori=random.randint(0, 360),
 )
 
 fixation_cross.draw()
@@ -195,13 +198,13 @@ fixation_cross.draw()
 
 capture_cue = visual.Rect(
     win=window,
-    units='pix',
+    units="pix",
     width=deg2pix(2),
     height=deg2pix(2),
-    pos=(0,0),
-    lineColor = 'red',
-    lineWidth = deg2pix(0.1),
-    fillColor = None,
+    pos=(0, 0),
+    lineColor="red",
+    lineWidth=deg2pix(0.1),
+    fillColor=None,
 )
 
 capture_cue.draw()
