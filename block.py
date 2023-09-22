@@ -36,7 +36,7 @@ def block_break(current_block, n_blocks, avg_score, settings, eyetracker):
     blocks_left = n_blocks - current_block
 
     show_text(
-        f"Your average score on the previous block was {avg_score}. "
+        f"You scored {avg_score}% correct on the previous block. "
         f"\n\nYou just finished block {current_block}, you {'only ' if blocks_left == 1 else ''}"
         f"have {blocks_left} block{'s' if blocks_left != 1 else ''} left. "
         "Take a break if you want to, but try not to move your head during this break."
@@ -59,7 +59,7 @@ def block_break(current_block, n_blocks, avg_score, settings, eyetracker):
 
 def long_break(n_blocks, avg_score, settings, eyetracker):
     show_text(
-        f"Your average score on the previous block was {avg_score}. "
+        f"You scored {avg_score}% correct on the previous block. "
         f"\n\nYou're halfway through! You have {n_blocks // 2} blocks left. "
         "Now is the time to take a longer break. Maybe get up, stretch, walk around."
         "\n\nPress SPACE whenever you're ready to continue again.",
