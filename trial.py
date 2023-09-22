@@ -28,6 +28,7 @@ import random
 # 6. response possible
 
 COLOURS = ["#ff99ac", "#f5e2a3", "#a8f0d1", "#99ceff"]
+ORIENTATION_TURN = 10
 
 
 def generate_trial_characteristics(condition: str, target_bar: str, duration):
@@ -38,12 +39,20 @@ def generate_trial_characteristics(condition: str, target_bar: str, duration):
         random.choice([-1, 1]) * random.randint(5, 85),
     ]
 
+    post_orientations = list(orientations)
+
     if target_bar == "left":
         target_colour, distractor_colour = stimuli_colours
-        target_orientation = orientations[0]
+        target_pre_orientation = orientations[0]
+        target_post_orientation = post_orientations[0] = (
+            post_orientations[0] + ORIENTATION_TURN
+        )
     else:
         distractor_colour, target_colour = stimuli_colours
-        target_orientation = orientations[1]
+        target_pre_orientation = orientations[1]
+        target_post_orientation = post_orientations[1] = (
+            orientations[1] + ORIENTATION_TURN
+        )
 
     if condition == "congruent":
         capture_colour = target_colour
@@ -57,9 +66,12 @@ def generate_trial_characteristics(condition: str, target_bar: str, duration):
         "trial_condition": condition,
         "left_orientation": orientations[0],
         "right_orientation": orientations[1],
+        "left_orientation_2": post_orientations[0],
+        "right_orientation_2": post_orientations[1],
         "target_bar": target_bar,
         "target_colour": target_colour,
-        "target_orientation": target_orientation,
+        "target_pre_orientation": target_pre_orientation,
+        "target_post_orientation": target_post_orientation,
     }
 
 
@@ -78,9 +90,12 @@ def single_trial(
     static_duration,
     left_orientation,
     right_orientation,
+    left_orientation_2,
+    right_orientation_2,
     target_bar,
     target_colour,
-    target_orientation,
+    target_pre_orientation,
+    target_post_orientation,
     stimuli_colours,
     capture_colour,
     trial_condition,
@@ -97,7 +112,7 @@ def single_trial(
         (
             0.25,
             lambda: create_cue_frame(capture_colour, settings),
-            "capture_cue_onset",
+            "cue_onset",
         ),
         (
             static_duration / 1000,
@@ -109,12 +124,12 @@ def single_trial(
         (
             0.25,
             lambda: create_stimuli_frame(
-                left_orientation, right_orientation + 30, stimuli_colours, settings
+                left_orientation_2, right_orientation_2, stimuli_colours, settings
             ),
             "stimuli_onset",
         ),
-        (0.75, lambda: create_fixation_cross(settings), None),
-        (1.25, lambda: create_fixation_cross(settings), None),
+        # (0.75, lambda: create_fixation_cross(settings), None),
+        # (1.25, lambda: create_fixation_cross(settings), None),
         (None, lambda: create_fixation_cross(settings, target_colour), None),
     ]
 
@@ -140,7 +155,7 @@ def single_trial(
     settings["window"].flip()
 
     response = get_response(
-        target_orientation,
+        target_post_orientation,
         target_colour,
         settings,
         testing,
