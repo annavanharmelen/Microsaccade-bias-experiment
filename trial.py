@@ -19,16 +19,8 @@ from stimuli import (
 from eyetracker import get_trigger
 import random
 
-# experiment flow:
-# 1. fixation point
-# 2. cue (90% predictable)
-# 3. fixation point + stimuli, of variable duration
-# 4. fixation point + stimuli, one of which changed orientation
-# 5. probe?
-# 6. response possible
-
-COLOURS = ["#ff99ac", "#f5e2a3", "#a8f0d1", "#99ceff"]
-ORIENTATION_TURN = 10
+COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
+ORIENTATION_TURN = 15
 
 
 def generate_trial_characteristics(condition: str, target_bar: str, duration):
@@ -128,9 +120,6 @@ def single_trial(
             ),
             "stimuli_onset",
         ),
-        # (0.75, lambda: create_fixation_cross(settings), None),
-        # (1.25, lambda: create_fixation_cross(settings), None),
-        (None, lambda: create_fixation_cross(settings, target_colour), None),
     ]
 
     # !!! The timing you pass to do_while_showing is the timing for the previously drawn screen. !!!
@@ -146,7 +135,7 @@ def single_trial(
         # Draw the next screen while showing the current one
         do_while_showing(duration, screens[index + 1][1], settings["window"])
 
-    # The for loop only draws the probe cue, never shows it
+    # The for loop only draws the last frame, never shows it
     # So show it here
     if not testing:
         trigger = get_trigger("probe_cue_onset", trial_condition, target_bar)
@@ -155,8 +144,6 @@ def single_trial(
     settings["window"].flip()
 
     response = get_response(
-        target_post_orientation,
-        target_colour,
         settings,
         testing,
         eyetracker,
@@ -171,7 +158,9 @@ def single_trial(
     # Show performance
     create_fixation_cross(settings)
     show_text(
-        f"{response['performance']}", settings["window"], (0, settings["deg2pix"](0.7))
+        "correct" if response["correct_key"] else "incorrect",
+        settings["window"],
+        (0, settings["deg2pix"](0.7)),
     )
 
     if not testing:
