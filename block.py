@@ -23,7 +23,7 @@ def create_block(n_trials):
     random.shuffle(congruencies)
 
     # Generate random trial lengths
-    durations = list(range(500, 3000, 50))
+    durations = list(range(500, 3000, 250))
     random.shuffle(durations)
 
     # Create trial parameters for all trials in one block
