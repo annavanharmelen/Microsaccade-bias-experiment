@@ -56,7 +56,7 @@ def make_one_gabor(orientation, colour, position, settings):
     gabor_texture[:, :, 1] = colour[1]
     gabor_texture[:, :, 2] = colour[2]
     gabor_texture[:, :, 3] = -visual.filters.makeGrating(
-        256, gratType="sin", cycles=8.5, ori=orientation
+        256, gratType="sin", cycles=10.5, ori=orientation
     )
 
     # Create Gabor grating stimulus
