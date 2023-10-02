@@ -51,9 +51,6 @@ def get_settings(monitor: dict, directory):
     return dict(
         deg2pix=lambda deg: round(deg / degrees_per_pixel),
   
-        # move the dial a quarter circle per second
-        dial_step_size=(0.5 * pi) / monitor["Hz"],  
-
         window=window,
 
         keyboard=Keyboard(),
