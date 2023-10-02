@@ -20,11 +20,12 @@ from eyetracker import get_trigger
 import random
 
 COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
-ORIENTATION_TURN = 15
+ORIENTATION_TURN = 2
 
 
-def generate_trial_characteristics(condition: str, target_bar: str, duration, direction: str):
-    
+def generate_trial_characteristics(
+    condition: str, target_bar: str, duration, direction: str
+):
     # Decide on random colours of stimulus
     stimuli_colours = random.sample(COLOURS, 2)
 
@@ -47,7 +48,7 @@ def generate_trial_characteristics(condition: str, target_bar: str, duration, di
         target_colour, distractor_colour = stimuli_colours
         target_pre_orientation = orientations[0]
         target_post_orientation = post_orientations[0] = (
-            post_orientations[0] + orientation_change 
+            post_orientations[0] + orientation_change
         )
     else:
         distractor_colour, target_colour = stimuli_colours
@@ -64,6 +65,7 @@ def generate_trial_characteristics(condition: str, target_bar: str, duration, di
 
     return {
         "static_duration": duration,
+        "change_direction": direction,
         "stimuli_colours": stimuli_colours,
         "capture_colour": capture_colour,
         "trial_condition": condition,
@@ -91,6 +93,7 @@ def do_while_showing(waiting_time, something_to_do, window):
 
 def single_trial(
     static_duration,
+    change_direction,
     left_orientation,
     right_orientation,
     left_orientation_2,
@@ -111,25 +114,34 @@ def single_trial(
 
     screens = [
         (0, lambda: 0 / 0, None),  # initial one to make life easier
-        (0.5, lambda: create_fixation_cross(settings), None),
+        (0.25, lambda: create_fixation_cross(settings), None),
         (
-            0.25,
-            lambda: create_cue_frame(capture_colour, settings),
-            "cue_onset",
-        ),
-        (
-            static_duration / 1000,
+            0.5,
             lambda: create_stimuli_frame(
                 left_orientation, right_orientation, stimuli_colours, settings
             ),
             "stimuli_onset",
         ),
         (
-            0.25,
+            static_duration / 1000,
             lambda: create_stimuli_frame(
-                left_orientation_2, right_orientation_2, stimuli_colours, settings
+                left_orientation,
+                right_orientation,
+                stimuli_colours,
+                settings,
+                capture_colour,
             ),
-            "stimuli_onset",
+            "cue_onset",
+        ),
+        (
+            None,
+            lambda: create_stimuli_frame(
+                left_orientation_2,
+                right_orientation_2,
+                stimuli_colours,
+                settings,
+                capture_colour,
+            ),
         ),
     ]
 
@@ -149,7 +161,7 @@ def single_trial(
     # The for loop only draws the last frame, never shows it
     # So show it here
     if not testing:
-        trigger = get_trigger("probe_cue_onset", trial_condition, target_bar)
+        trigger = get_trigger("change_onset", trial_condition, target_bar)
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     settings["window"].flip()
@@ -159,7 +171,7 @@ def single_trial(
         testing,
         eyetracker,
         trial_condition,
-        target_bar,
+        change_direction,
     )
 
     if not testing:
@@ -171,7 +183,7 @@ def single_trial(
     show_text(
         "correct" if response["correct_key"] else "incorrect",
         settings["window"],
-        (0, settings["deg2pix"](0.7)),
+        (0, settings["deg2pix"](0.3)),
     )
 
     if not testing:
