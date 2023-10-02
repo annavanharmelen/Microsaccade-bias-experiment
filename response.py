@@ -49,7 +49,7 @@ def get_response(
     keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    pressed = event.waitKeys(keyList=["z", "m", "q"], maxWait=1.5)
+    pressed = event.waitKeys(keyList=["z", "m", "q"], maxWait=2)
 
     if not testing and eyetracker:
         # trigger = get_trigger("response_onset", trial_condition, target_bar)
