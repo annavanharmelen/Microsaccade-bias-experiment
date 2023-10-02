@@ -23,9 +23,12 @@ COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
 ORIENTATION_TURN = 15
 
 
-def generate_trial_characteristics(condition: str, target_bar: str, duration):
+def generate_trial_characteristics(condition: str, target_bar: str, duration, direction: str):
+    
+    # Decide on random colours of stimulus
     stimuli_colours = random.sample(COLOURS, 2)
 
+    # Create random original orientations
     orientations = [
         random.choice([-1, 1]) * random.randint(5, 85),
         random.choice([-1, 1]) * random.randint(5, 85),
@@ -33,19 +36,27 @@ def generate_trial_characteristics(condition: str, target_bar: str, duration):
 
     post_orientations = list(orientations)
 
+    # Make orientation change in predetermined direction
+    if direction == "clockwise":
+        orientation_change = ORIENTATION_TURN
+    if direction == "anticlockwise":
+        orientation_change = -ORIENTATION_TURN
+
+    # Determine both stimuli orientations after orientation change
     if target_bar == "left":
         target_colour, distractor_colour = stimuli_colours
         target_pre_orientation = orientations[0]
         target_post_orientation = post_orientations[0] = (
-            post_orientations[0] + ORIENTATION_TURN
+            post_orientations[0] + orientation_change 
         )
     else:
         distractor_colour, target_colour = stimuli_colours
         target_pre_orientation = orientations[1]
         target_post_orientation = post_orientations[1] = (
-            orientations[1] + ORIENTATION_TURN
+            orientations[1] + orientation_change
         )
 
+    # Determine colour of cue
     if condition == "congruent":
         capture_colour = target_colour
     elif condition == "incongruent":
