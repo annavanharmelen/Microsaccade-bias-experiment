@@ -11,12 +11,28 @@ from math import atan2, degrees
 import time
 import random
 from numpy import ones, zeros, unique
+from block import create_trial_list, create_blocks
 
 # from set_up import set_up
 import pandas as pd
 import datetime as dt
 
-window = visual.Window(color='#7F7F7F', size=[1920, 1080], units="pix", fullscr=True)
+n_incongruent_trials = 40
+n_congruent_trials = 160
+N_BLOCKS = 5
+n_blocks = N_BLOCKS
+TRIALS_PER_BLOCK = 40
+PREDICTABILITY = 80
+incongruent_trials = create_trial_list(n_incongruent_trials, "incongruent")
+congruent_trials = create_trial_list(n_congruent_trials, "congruent")
+blocks = create_blocks(congruent_trials, incongruent_trials, N_BLOCKS, TRIALS_PER_BLOCK, PREDICTABILITY)
+
+# stop here
+import sys
+
+sys.exit()
+
+window = visual.Window(color="#7F7F7F", size=[1920, 1080], units="pix", fullscr=True)
 
 # bitmap = zeros([256,256,3],'f')
 # bitmap[:,:,0] = visual.filters.makeGrating(256,gratType='sin')
@@ -24,12 +40,12 @@ window = visual.Window(color='#7F7F7F', size=[1920, 1080], units="pix", fullscr=
 # bitmap[:,:,2] = -0.003
 # print(unique(bitmap[:,:,0]))
 
-bitmap = ones([256,256,4],'f')
-bitmap[:,:,0] = 1
-bitmap[:,:,1] = -1
-bitmap[:,:,2] = -1
-bitmap[:,:,3] = visual.filters.makeGrating(256,gratType='sin',cycles=4.5)
-print(unique(bitmap[:,:,0]))
+bitmap = ones([256, 256, 4], "f")
+bitmap[:, :, 0] = 1
+bitmap[:, :, 1] = -1
+bitmap[:, :, 2] = -1
+bitmap[:, :, 3] = visual.filters.makeGrating(256, gratType="sin", cycles=4.5)
+print(unique(bitmap[:, :, 0]))
 
 gabor_stimulus = visual.GratingStim(
     win=window,
@@ -38,17 +54,12 @@ gabor_stimulus = visual.GratingStim(
     pos=(0, 0),
     tex=bitmap,
     mask="raisedCos",
-    maskParams={"fringeWidth": 0.5}
+    maskParams={"fringeWidth": 0.5},
 )
 
 gabor_stimulus.draw()
 window.flip()
 time.sleep(5)
-
-# stop here
-import sys
-sys.exit()
-
 
 durations = list(range(500, 3000, 50))
 random.shuffle(durations)
