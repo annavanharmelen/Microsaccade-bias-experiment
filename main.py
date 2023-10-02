@@ -16,10 +16,18 @@ from time import time
 from numpy import mean
 from practice import practice
 import datetime as dt
-from block import create_block, block_break, long_break, finish, quick_finish
+from block import (
+    create_trial_list,
+    create_blocks,
+    block_break,
+    long_break,
+    finish,
+    quick_finish,
+)
 
-N_BLOCKS = 16
-TRIALS_PER_BLOCK = 50
+N_BLOCKS = 10
+TRIALS_PER_BLOCK = 40
+PREDICTABILITY = 80
 
 
 def main():
@@ -63,13 +71,23 @@ def main():
         eyelinker.calibrate()
 
     # Practice until participant wants to stop
-    practice(testing, settings)
+    # practice(testing, settings)
 
     # Initialise some stuff
     start_of_experiment = time()
     data = []
     current_trial = 0
     finished_early = True
+    block_number = 0
+
+    # Pseudo-randomly create conditions and target locations (so they're weighted)
+    n_incongruent_trials = N_BLOCKS * TRIALS_PER_BLOCK * (100 - PREDICTABILITY) // 100
+    n_congruent_trials = N_BLOCKS * TRIALS_PER_BLOCK * PREDICTABILITY // 100
+    incongruent_trials = create_trial_list(n_incongruent_trials, "incongruent")
+    congruent_trials = create_trial_list(n_congruent_trials, "congruent")
+    blocks = create_blocks(
+        congruent_trials, incongruent_trials, N_BLOCKS, TRIALS_PER_BLOCK, PREDICTABILITY
+    )
 
     # Start recording eyetracker
     if not testing:
@@ -77,20 +95,20 @@ def main():
 
     # Start experiment
     try:
-        for block in range(2 if testing else N_BLOCKS):
-            # Pseudo-randomly create conditions and target locations (so they're weighted)
-            block_info = create_block(10 if testing else TRIALS_PER_BLOCK)
+        for block in blocks:
+            # Update block number
+            block_number += 1
 
             # Create temporary variable for saving block performance
             block_performance = []
 
             # Run trials per pseudo-randomly created info
-            for condition, target_location, trial_length in block_info:
+            for target_location, direction, trial_length, congruency in block:
                 current_trial += 1
                 start_time = time()
 
                 trial_characteristics: dict = generate_trial_characteristics(
-                    condition, target_location, trial_length
+                    congruency, target_location, trial_length, direction
                 )
 
                 # Generate trial
@@ -106,7 +124,7 @@ def main():
                 data.append(
                     {
                         "trial_number": current_trial,
-                        "block": block + 1,
+                        "block": block_number,
                         "start_time": str(
                             dt.timedelta(seconds=(start_time - start_of_experiment))
                         ),

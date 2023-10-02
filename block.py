@@ -10,26 +10,66 @@ from trial import show_text
 from response import wait_for_key
 
 
-def create_block(n_trials):
-    if n_trials % 10 != 0:
-        raise Exception("Expected number of trials to be divisible by 10.")
+def create_blocks(
+    congruent_trials, incongruent_trials, n_blocks, n_block_trials, predictability
+):
+    if len(congruent_trials) % 40 != 0 or len(incongruent_trials) % 40 != 0:
+        raise Exception("Expected both numbers of trials to be divisible by 40.")
 
-    # Create random, but equal distribution of target locations
-    locations = n_trials // 10 * 5 * ["left", "right"]
-    random.shuffle(locations)
-    
-    # Create 10% incongruent trials
-    congruencies = n_trials // 10 * (9 * ["congruent"] + ["incongruent"])
-    random.shuffle(congruencies)
+    # Determine number of incongruent trials per block
+    n_incongruent_trials = n_block_trials * (100 - predictability) // 100
+    n_congruent_trials = n_block_trials * predictability // 100
 
-    # Generate random trial lengths
-    durations = list(range(500, 3000, 250))
-    random.shuffle(durations)
+    # Create list of blocks
+    blocks = [[] for _ in range(n_blocks)]
 
-    # Create trial parameters for all trials in one block
-    trials = zip(congruencies, locations, durations)
+    # Trials are already in random order, they just need to be cut into smaller blocks
+    for n_block in range(n_blocks):
+        blocks[n_block].extend(
+            congruent_trials[
+                n_block * n_congruent_trials : (n_block + 1) * n_congruent_trials
+            ]
+        )
+        blocks[n_block].extend(
+            incongruent_trials[
+                n_block * n_incongruent_trials : (n_block + 1) * n_incongruent_trials
+            ]
+        )
+        random.shuffle(blocks[n_block])
 
-    return list(trials)
+    return blocks
+
+
+def create_trial_list(n_trials, congruency: str):
+    if n_trials % 40 != 0:
+        raise Exception(
+            "Expected number of trials to be divisible by 40, otherwise perfect factorial combinations are not possible."
+        )
+
+    if congruency != "congruent" and congruency != "incongruent":
+        raise Exception(
+            "Expected congruency of trial to be either 'congruent' or 'incongruent'."
+        )
+
+    # Generate equal distribution of target locations
+    locations = n_trials // 2 * ["left"] + n_trials // 2 * ["right"]
+
+    # Generate equal distribution of rotation directions,
+    # that co-occur equally with the target locations
+    directions = 2 * (n_trials // 4 * ["clockwise"] + n_trials // 4 * ["anticlockwise"])
+
+    # Generate equal distribution of trial lengths,
+    # that co-occur equally with both target locations and directions
+    durations = n_trials // 10 * list(range(500, 3005, 278))
+
+    # Add congruency to all trials
+    congruencies = [congruency] * n_trials
+
+    # Create trial parameters for all trials
+    trials = list(zip(locations, directions, durations, congruencies))
+    random.shuffle(trials)
+
+    return trials
 
 
 def block_break(current_block, n_blocks, avg_score, settings, eyetracker):
