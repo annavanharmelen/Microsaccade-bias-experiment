@@ -16,7 +16,7 @@ RESPONSE_DIAL_SIZE = 2
 
 def evaluate_response(change_direction, response):
     if (
-        change_direction == response == "clockwise" 
+        change_direction == response == "clockwise"
         or change_direction == response == "anticlockwise"
     ):
         correct_key = True
@@ -49,24 +49,34 @@ def get_response(
     keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    pressed = event.waitKeys(keyList=["z", "m", "q"])
+    pressed = event.waitKeys(keyList=["z", "m", "q"], maxWait=1.5)
 
     if not testing and eyetracker:
-        #trigger = get_trigger("response_onset", trial_condition, target_bar)
-        #eyetracker.tracker.send_message(f"trig{trigger}")
+        # trigger = get_trigger("response_onset", trial_condition, target_bar)
+        # eyetracker.tracker.send_message(f"trig{trigger}")
         ...
 
     response_started = time()
     response_time = response_started - idle_reaction_time_start
 
-    if "m" in pressed:
-        key = "m"
-        response = "clockwise"
-    elif "z" in pressed:
-        key = "z"
-        response = "anticlockwise"
-    if "q" in pressed:
-        raise KeyboardInterrupt()
+    if pressed:
+        if "q" in pressed:
+            raise KeyboardInterrupt()
+
+        if "m" in pressed:
+            key = "m"
+            response = "clockwise"
+            missed = False
+
+        elif "z" in pressed:
+            key = "z"
+            response = "anticlockwise"
+            missed = False
+
+    else:
+        key = None
+        response = None
+        missed = True
 
     # Make sure keystrokes made during this trial don't influence the next
     keyboard.clearEvents()
@@ -75,6 +85,7 @@ def get_response(
         "response_time_in_ms": round(response_time * 1000, 2),
         "key_pressed": key,
         "premature_keys": prematurely_pressed[0] if prematurely_pressed else None,
+        "missed": missed,
         **evaluate_response(change_direction, response),
     }
 
