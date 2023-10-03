@@ -7,7 +7,7 @@ made by Anna van Harmelen, 2023
 
 from psychopy import visual
 from psychopy.hardware.keyboard import Keyboard
-from math import atan2, degrees
+from math import atan2, degrees, sqrt
 import time
 import random
 from numpy import ones, zeros, unique
@@ -17,15 +17,10 @@ from block import create_trial_list, create_blocks
 import pandas as pd
 import datetime as dt
 
-n_incongruent_trials = 40
-n_congruent_trials = 160
-N_BLOCKS = 5
-n_blocks = N_BLOCKS
-TRIALS_PER_BLOCK = 40
-PREDICTABILITY = 80
-incongruent_trials = create_trial_list(n_incongruent_trials, "incongruent")
-congruent_trials = create_trial_list(n_congruent_trials, "congruent")
-blocks = create_blocks(congruent_trials, incongruent_trials, N_BLOCKS, TRIALS_PER_BLOCK, PREDICTABILITY)
+c = 3
+a = (sqrt(1 / 2 * c**2))
+#random.shuffle(durations)
+print(a)
 
 # stop here
 import sys
@@ -61,9 +56,7 @@ gabor_stimulus.draw()
 window.flip()
 time.sleep(5)
 
-durations = list(range(500, 3000, 50))
-random.shuffle(durations)
-print(durations)
+
 
 keyboard: Keyboard = Keyboard()
 keyboard.clearEvents()
