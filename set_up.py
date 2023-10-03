@@ -10,6 +10,8 @@ from psychopy import visual
 from psychopy.hardware.keyboard import Keyboard
 from math import degrees, atan2, pi
 
+GABOR_SIZE = 2  # diameter of Gabor
+
 
 def get_monitor_and_dir(testing: bool):
     if testing:
@@ -33,31 +35,35 @@ def get_monitor_and_dir(testing: bool):
         }
 
         directory = r"C:\Users\Anna_vidi\Desktop\data"
-    
+
     return monitor, directory
 
+
 def get_settings(monitor: dict, directory):
+    # Initialise psychopy window
     window = visual.Window(
-        color=('#7F7F7F'),
+        color=("#7F7F7F"),
         size=monitor["resolution"],
         units="pix",
         fullscr=True,
     )
 
+    # Calculate number of visual degrees per pixel on the screen
     degrees_per_pixel = degrees(atan2(0.5 * monitor["width"], monitor["distance"])) / (
         0.5 * monitor["resolution"][0]
     )
 
+    # Determine size of Gabor grating
+    sizes = [64, 128, 256, 512, 1024]
+    size_raw = round(GABOR_SIZE / degrees_per_pixel)
+    size = min(sizes, key=lambda x: abs(x - size_raw))
+
     return dict(
         deg2pix=lambda deg: round(deg / degrees_per_pixel),
-  
+        gabor_size=size,
         window=window,
-
         keyboard=Keyboard(),
-
         mouse=visual.CustomMouse(win=window, visible=False),
-
         monitor=monitor,
-
         directory=directory,
     )

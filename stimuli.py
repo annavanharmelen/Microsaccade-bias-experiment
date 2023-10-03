@@ -11,7 +11,6 @@ from numpy import zeros
 from math import sqrt
 
 ECCENTRICITY = 4
-GABOR_SIZE = 1  # diameter of Gabor
 DOT_SIZE = 0.05  # diameter of circle
 
 
@@ -32,6 +31,8 @@ def create_fixation_dot(settings, colour="#eaeaea"):
 
 
 def make_one_gabor(orientation, colour, position, settings):
+
+
     # Check input
     if position == "left":
         pos = (
@@ -49,19 +50,19 @@ def make_one_gabor(orientation, colour, position, settings):
         raise Exception(f"Expected 'left' or 'right', but received {position!r}. :(")
 
     # Create texture for Gabor stimulus
-    gabor_texture = zeros([128, 128, 4], "f")
+    gabor_texture = zeros([settings["gabor_size"], settings["gabor_size"], 4], "f")
     gabor_texture[:, :, 0] = colour[0]
     gabor_texture[:, :, 1] = colour[1]
     gabor_texture[:, :, 2] = colour[2]
     gabor_texture[:, :, 3] = -visual.filters.makeGrating(
-        128, gratType="sin", cycles=10.5, ori=orientation
+        settings["gabor_size"], gratType="sin", cycles=10.5, ori=orientation
     )
 
     # Create Gabor grating stimulus
     gabor_stimulus = visual.GratingStim(
         win=settings["window"],
         units="pix",
-        size=(128, 128),
+        size=(settings["gabor_size"], settings["gabor_size"]),
         pos=pos,
         tex=gabor_texture,
         mask="raisedCos",
