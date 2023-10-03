@@ -12,15 +12,14 @@ from psychopy.core import wait
 from time import time, sleep
 from response import get_response, check_quit
 from stimuli import (
-    create_fixation_cross,
-    create_cue_frame,
+    create_fixation_dot,
     create_stimuli_frame,
 )
 from eyetracker import get_trigger
 import random
 
 COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
-ORIENTATION_TURN = 2
+ORIENTATION_TURN = 5
 
 
 def generate_trial_characteristics(
@@ -65,6 +64,7 @@ def generate_trial_characteristics(
 
     return {
         "static_duration": duration,
+        "ITI": random.randint(500, 800),
         "change_direction": direction,
         "stimuli_colours": stimuli_colours,
         "capture_colour": capture_colour,
@@ -93,6 +93,7 @@ def do_while_showing(waiting_time, something_to_do, window):
 
 def single_trial(
     static_duration,
+    ITI,
     change_direction,
     left_orientation,
     right_orientation,
@@ -110,11 +111,11 @@ def single_trial(
     eyetracker=None,
 ):
     # Initial fixation cross to eliminate jitter caused by for loop
-    create_fixation_cross(settings)
+    create_fixation_dot(settings)
 
     screens = [
         (0, lambda: 0 / 0, None),  # initial one to make life easier
-        (0.25, lambda: create_fixation_cross(settings), None),
+        (ITI / 1000, lambda: create_fixation_dot(settings), None),
         (
             0.5,
             lambda: create_stimuli_frame(
@@ -184,7 +185,7 @@ def single_trial(
     else:
         feedback = "correct" if response["correct_key"] else "incorrect"
 
-    create_fixation_cross(settings)
+    create_fixation_dot(settings)
     show_text(feedback, settings["window"], (0, settings["deg2pix"](0.3)))
 
     if not testing:
