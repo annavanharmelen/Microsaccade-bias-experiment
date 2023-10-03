@@ -60,7 +60,7 @@ def create_trial_list(n_trials, congruency: str):
 
     # Generate equal distribution of trial lengths,
     # that co-occur equally with both target locations and directions
-    durations = n_trials // 10 * list(range(500, 3005, 278))
+    durations = n_trials // 10 * list(range(500, 3201, 300))
 
     # Add congruency to all trials
     congruencies = [congruency] * n_trials
