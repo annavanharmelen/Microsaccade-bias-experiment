@@ -103,7 +103,9 @@ def main():
             block_performance = []
 
             # Run trials per pseudo-randomly created info
-            for target_location, direction, trial_length, congruency in block:
+            for target_location, direction, trial_length, congruency in (
+                block[0:10] if testing else block
+            ):
                 current_trial += 1
                 start_time = time()
 
@@ -144,7 +146,7 @@ def main():
             # Break after end of block, unless it's the last block.
             # Experimenter can re-calibrate the eyetracker by pressing 'c' here.
             calibrated = True
-            if block + 1 == N_BLOCKS // 2:
+            if block_number == N_BLOCKS // 2:
                 while calibrated:
                     calibrated = long_break(
                         N_BLOCKS,
@@ -154,10 +156,10 @@ def main():
                     )
                 if not testing:
                     eyelinker.start()
-            elif block + 1 < N_BLOCKS:
+            elif block_number < N_BLOCKS:
                 while calibrated:
                     calibrated = block_break(
-                        block + 1,
+                        block_number,
                         N_BLOCKS,
                         avg_score,
                         settings,
