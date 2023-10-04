@@ -12,13 +12,15 @@ from trial import (
     show_text,
 )
 from stimuli import make_one_gabor, create_fixation_dot
-from response import get_response, wait_for_key
+from response import get_response, wait_for_key, check_quit
 from psychopy import event
 from psychopy.hardware.keyboard import Keyboard
+from trial import COLOURS
 from time import sleep
 import random
+from numpy import mean
 
-# 1. Practice response dials using a block with a specific orientation
+# 1. Practice giving a response to a single stimulus
 # 2. Practice full trials
 
 
@@ -32,31 +34,48 @@ def practice(testing, settings):
     settings["window"].flip()
     wait_for_key(["space"], settings["keyboard"])
 
-    # Practice dial until user chooses to stop
+    # Practice single stimulus until user chooses to stop
     try:
         while True:
-            target_bar = random.choice(["left", "right"])
-            condition = "neutral"
-            target = generate_trial_characteristics(condition, target_bar)
-            target_orientation = target["target_orientation"]
-            target_colour = None
+            orientation = random.choice([-1, 1]) * random.randint(5, 85)
+            new_orientation = orientation + random.choice([-1, 1]) * 5
+            if new_orientation < orientation:
+                change_direction = "anticlockwise"
+            else:
+                change_direction = "clockwise"
 
-            practice_bar = make_one_gabor(
-                target_orientation, "#eaeaea", "middle", settings
-            )
+            colour = random.choice(COLOURS)
 
+            make_one_gabor(orientation, colour, "middle", settings).draw()
             create_fixation_dot(settings)
-            show_text(
-                f"{report['performance']}",
-                settings["window"],
-                (0, settings["deg2pix"](0.5)),
+
+            check_quit(settings["keyboard"])
+
+            settings["window"].flip()
+            sleep(random.randint(500, 1500) / 1000)
+
+            make_one_gabor(new_orientation, colour, "middle", settings).draw()
+            create_fixation_dot(settings)
+
+            settings["window"].flip()
+            response = get_response(
+                settings, testing, None, "congruent", change_direction
             )
+
+            show_text(
+                response["feedback"],
+                settings["window"],
+                (0, settings["deg2pix"](0.3)),
+            )
+            create_fixation_dot(settings)
+
             settings["window"].flip()
             sleep(0.5)
 
     except KeyboardInterrupt:
+        settings["window"].flip()
         show_text(
-            "You decided to stop practising the response dial."
+            "You decided to stop practicing how to respond to the stimulus."
             "Press SPACE to start practicing full trials."
             "\n\nRemember to press Q to stop practising these trials once you feel comfortable starting the real experiment.",
             settings["window"],
@@ -65,18 +84,35 @@ def practice(testing, settings):
         wait_for_key(["space"], settings["keyboard"])
 
     # Practice trials until user chooses to stop
+
+    performance = []
+
     try:
         while True:
-            target_bar = random.choice(["left", "right"])
-            condition = random.choice(["congruent", "incongruent", "neutral"])
+            orientation = random.choice([-1, 1]) * random.randint(5, 85)
+            new_orientation = orientation + random.choice([-1, 1]) * 5
+            if new_orientation < orientation:
+                change_direction = "anticlockwise"
+            else:
+                change_direction = "clockwise"
 
-            stimulus = generate_trial_characteristics(condition, target_bar)
+            stimulus = generate_trial_characteristics(
+                random.choice(8 * ["congruent"] + 2 * ["incongruent"]),
+                random.choice(["left", "right"]),
+                random.choice(list(range(500, 3201, 300))),
+                change_direction,
+            )
 
             report: dict = single_trial(**stimulus, settings=settings, testing=True)
 
+            performance.append(report["correct_key"])
+
     except KeyboardInterrupt:
+        settings["window"].flip()
         show_text(
-            f"You decided to stop practicing the trials.\n\nPress SPACE to start the experiment.",
+            f"You decided to stop practicing. "
+            f"\nDuring this practice, you answered correctly {round(mean(performance) * 100) if performance else 0}% of the time."
+            "\n\nPress SPACE to start the experiment.",
             settings["window"],
         )
         settings["window"].flip()
