@@ -40,6 +40,7 @@ def get_response(
     eyetracker,
     trial_condition,
     change_direction,
+    target_bar,
 ):
     keyboard: Keyboard = settings["keyboard"]
 
@@ -57,13 +58,7 @@ def get_response(
     # Wait indefinitely until the participant starts giving an answer
     pressed = event.waitKeys(keyList=["z", "m", "q"], maxWait=2)
 
-    if not testing and eyetracker:
-        # trigger = get_trigger("response_onset", trial_condition, target_bar)
-        # eyetracker.tracker.send_message(f"trig{trigger}")
-        ...
-
-    response_started = time()
-    response_time = response_started - idle_reaction_time_start
+    response_time = time() - idle_reaction_time_start
 
     if pressed:
         if "q" in pressed:
@@ -73,16 +68,26 @@ def get_response(
             key = "m"
             response = "clockwise"
             missed = False
+            if not testing and eyetracker:
+                trigger = get_trigger("response_right", trial_condition, target_bar)
+                eyetracker.tracker.send_message(f"trig{trigger}")
 
         elif "z" in pressed:
             key = "z"
             response = "anticlockwise"
             missed = False
+            if not testing and eyetracker:
+                trigger = get_trigger("response_left", trial_condition, target_bar)
+                eyetracker.tracker.send_message(f"trig{trigger}")
 
     else:
         key = None
         response = None
         missed = True
+        if not testing and eyetracker:
+                trigger = get_trigger("response_missed", trial_condition, target_bar)
+                eyetracker.tracker.send_message(f"trig{trigger}")
+
 
     # Make sure keystrokes made during this trial don't influence the next
     keyboard.clearEvents()

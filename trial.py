@@ -150,7 +150,7 @@ def single_trial(
     for index, (duration, _, frame) in enumerate(screens[:-1]):
         # Send trigger if not testing
         if not testing and frame:
-            trigger = get_trigger(frame, trial_condition, target_bar)
+            trigger = get_trigger(frame, trial_condition, target_bar, change_direction)
             eyetracker.tracker.send_message(f"trig{trigger}")
 
         # Check for pressed 'q'
@@ -162,7 +162,9 @@ def single_trial(
     # The for loop only draws the last frame, never shows it
     # So show it here
     if not testing:
-        trigger = get_trigger("change_onset", trial_condition, target_bar)
+        trigger = get_trigger(
+            "orientation_change", trial_condition, target_bar, change_direction
+        )
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     settings["window"].flip()
@@ -173,11 +175,8 @@ def single_trial(
         eyetracker,
         trial_condition,
         change_direction,
+        target_bar,
     )
-
-    if not testing:
-        trigger = get_trigger("response_offset", trial_condition, target_bar)
-        eyetracker.tracker.send_message(f"trig{trigger}")
 
     # Show performance
     create_fixation_dot(settings)
