@@ -180,13 +180,8 @@ def single_trial(
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     # Show performance
-    if response["missed"]:
-        feedback = "missed"
-    else:
-        feedback = "correct" if response["correct_key"] else "incorrect"
-
     create_fixation_dot(settings)
-    show_text(feedback, settings["window"], (0, settings["deg2pix"](0.3)))
+    show_text(response["feedback"], settings["window"], (0, settings["deg2pix"](0.3)))
 
     if not testing:
         trigger = get_trigger("feedback_onset", trial_condition, target_bar)
