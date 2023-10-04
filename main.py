@@ -81,12 +81,12 @@ def main():
     block_number = 0
 
     # Pseudo-randomly create conditions and target locations (so they're weighted)
-    n_incongruent_trials = N_BLOCKS * TRIALS_PER_BLOCK * (100 - PREDICTABILITY) // 100
-    n_congruent_trials = N_BLOCKS * TRIALS_PER_BLOCK * PREDICTABILITY // 100
-    incongruent_trials = create_trial_list(n_incongruent_trials, "incongruent")
-    congruent_trials = create_trial_list(n_congruent_trials, "congruent")
+    n_invalid_trials = N_BLOCKS * TRIALS_PER_BLOCK * (100 - PREDICTABILITY) // 100
+    n_valid_trials = N_BLOCKS * TRIALS_PER_BLOCK * PREDICTABILITY // 100
+    invalid_trials = create_trial_list(n_invalid_trials, "invalid")
+    valid_trials = create_trial_list(n_valid_trials, "valid")
     blocks = create_blocks(
-        congruent_trials, incongruent_trials, N_BLOCKS, TRIALS_PER_BLOCK, PREDICTABILITY
+        valid_trials, invalid_trials, N_BLOCKS, TRIALS_PER_BLOCK, PREDICTABILITY
     )
 
     # Start recording eyetracker

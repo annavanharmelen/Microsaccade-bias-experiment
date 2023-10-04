@@ -59,7 +59,7 @@ def practice(testing, settings):
 
             settings["window"].flip()
             response = get_response(
-                settings, testing, None, "congruent", change_direction
+                settings, testing, None, "valid", change_direction
             )
 
             show_text(
@@ -97,7 +97,7 @@ def practice(testing, settings):
                 change_direction = "clockwise"
 
             stimulus = generate_trial_characteristics(
-                random.choice(8 * ["congruent"] + 2 * ["incongruent"]),
+                random.choice(8 * ["valid"] + 2 * ["invalid"]),
                 random.choice(["left", "right"]),
                 random.choice(list(range(500, 3201, 300))),
                 change_direction,

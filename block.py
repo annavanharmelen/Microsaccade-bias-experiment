@@ -11,14 +11,14 @@ from response import wait_for_key
 
 
 def create_blocks(
-    congruent_trials, incongruent_trials, n_blocks, n_block_trials, predictability
+    valid_trials, invalid_trials, n_blocks, n_block_trials, predictability
 ):
-    if len(congruent_trials) % 40 != 0 or len(incongruent_trials) % 40 != 0:
+    if len(valid_trials) % 40 != 0 or len(invalid_trials) % 40 != 0:
         raise Exception("Expected both numbers of trials to be divisible by 40.")
 
-    # Determine number of incongruent trials per block
-    n_incongruent_trials = n_block_trials * (100 - predictability) // 100
-    n_congruent_trials = n_block_trials * predictability // 100
+    # Determine number of (in)valid trials per block
+    n_invalid_trials = n_block_trials * (100 - predictability) // 100
+    n_valid_trials = n_block_trials * predictability // 100
 
     # Create list of blocks
     blocks = [[] for _ in range(n_blocks)]
@@ -26,13 +26,13 @@ def create_blocks(
     # Trials are already in random order, they just need to be cut into smaller blocks
     for n_block in range(n_blocks):
         blocks[n_block].extend(
-            congruent_trials[
-                n_block * n_congruent_trials : (n_block + 1) * n_congruent_trials
+            valid_trials[
+                n_block * n_valid_trials : (n_block + 1) * n_valid_trials
             ]
         )
         blocks[n_block].extend(
-            incongruent_trials[
-                n_block * n_incongruent_trials : (n_block + 1) * n_incongruent_trials
+            invalid_trials[
+                n_block * n_invalid_trials : (n_block + 1) * n_invalid_trials
             ]
         )
         random.shuffle(blocks[n_block])
@@ -40,15 +40,15 @@ def create_blocks(
     return blocks
 
 
-def create_trial_list(n_trials, congruency: str):
+def create_trial_list(n_trials, validity: str):
     if n_trials % 40 != 0:
         raise Exception(
             "Expected number of trials to be divisible by 40, otherwise perfect factorial combinations are not possible."
         )
 
-    if congruency != "congruent" and congruency != "incongruent":
+    if validity != "valid" and validity != "invalid":
         raise Exception(
-            "Expected congruency of trial to be either 'congruent' or 'incongruent'."
+            "Expected validity of trial to be either 'valid' or 'invalid'."
         )
 
     # Generate equal distribution of target locations
@@ -62,11 +62,11 @@ def create_trial_list(n_trials, congruency: str):
     # that co-occur equally with both target locations and directions
     durations = n_trials // 10 * list(range(500, 3201, 300))
 
-    # Add congruency to all trials
-    congruencies = [congruency] * n_trials
+    # Add validity to all trials
+    validities = [validity] * n_trials
 
     # Create trial parameters for all trials
-    trials = list(zip(locations, directions, durations, congruencies))
+    trials = list(zip(locations, directions, durations, validities))
     random.shuffle(trials)
 
     return trials

@@ -57,9 +57,9 @@ def generate_trial_characteristics(
         )
 
     # Determine colour of cue
-    if condition == "congruent":
+    if condition == "valid":
         capture_colour = target_colour
-    elif condition == "incongruent":
+    elif condition == "invalid":
         capture_colour = distractor_colour
 
     return {
