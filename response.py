@@ -23,8 +23,14 @@ def evaluate_response(change_direction, response):
     else:
         correct_key = False
 
+    if not response:
+        feedback = "missed"
+    else:
+        feedback = "correct" if correct_key else "incorrect"
+
     return {
         "correct_key": correct_key,
+        "feedback": feedback,
     }
 
 
