@@ -31,8 +31,6 @@ def create_fixation_dot(settings, colour="#eaeaea"):
 
 
 def make_one_gabor(orientation, colour, position, settings):
-
-
     # Check input
     if position == "left":
         pos = (
@@ -45,7 +43,7 @@ def make_one_gabor(orientation, colour, position, settings):
             -settings["deg2pix"](sqrt(1 / 2 * ECCENTRICITY**2)),
         )
     elif position == "middle":
-        pos = (0, 0)
+        pos = (0, -settings["deg2pix"](sqrt(1 / 2 * ECCENTRICITY**2)))
     else:
         raise Exception(f"Expected 'left' or 'right', but received {position!r}. :(")
 
