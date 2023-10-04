@@ -71,7 +71,7 @@ def main():
         eyelinker.calibrate()
 
     # Practice until participant wants to stop
-    # practice(testing, settings)
+    practice(testing, settings)
 
     # Initialise some stuff
     start_of_experiment = time()
