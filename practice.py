@@ -59,7 +59,7 @@ def practice(testing, settings):
 
             settings["window"].flip()
             response = get_response(
-                settings, testing, None, "valid", change_direction
+                settings, testing, None, "valid", change_direction, None
             )
 
             show_text(
