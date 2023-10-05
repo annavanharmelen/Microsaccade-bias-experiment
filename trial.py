@@ -19,9 +19,9 @@ from stimuli import (
 from eyetracker import get_trigger
 import random
 
-#COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
-COLOURS = array([[21, 165, 234], [133,193,18], [197,21,234], [234, 74, 21]])
-COLOURS = list((COLOURS - 128)/128)
+COLOURS = list(
+    (array([[21, 165, 234], [133, 193, 18], [197, 21, 234], [234, 74, 21]]) - 128) / 128
+)
 ORIENTATION_TURN = 2
 
 
@@ -188,7 +188,9 @@ def single_trial(
     sleep(0.25)
 
     return {
-        "condition_code": get_trigger("stimuli_onset", trial_condition, target_bar, change_direction),
+        "condition_code": get_trigger(
+            "stimuli_onset", trial_condition, target_bar, change_direction
+        ),
         **response,
     }
 

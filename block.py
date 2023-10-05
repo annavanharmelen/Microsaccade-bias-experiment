@@ -26,9 +26,7 @@ def create_blocks(
     # Trials are already in random order, they just need to be cut into smaller blocks
     for n_block in range(n_blocks):
         blocks[n_block].extend(
-            valid_trials[
-                n_block * n_valid_trials : (n_block + 1) * n_valid_trials
-            ]
+            valid_trials[n_block * n_valid_trials : (n_block + 1) * n_valid_trials]
         )
         blocks[n_block].extend(
             invalid_trials[
@@ -47,9 +45,7 @@ def create_trial_list(n_trials, validity: str):
         )
 
     if validity != "valid" and validity != "invalid":
-        raise Exception(
-            "Expected validity of trial to be either 'valid' or 'invalid'."
-        )
+        raise Exception("Expected validity of trial to be either 'valid' or 'invalid'.")
 
     # Generate equal distribution of target locations
     locations = n_trials // 2 * ["left"] + n_trials // 2 * ["right"]
