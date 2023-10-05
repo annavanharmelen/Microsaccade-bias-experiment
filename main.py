@@ -70,6 +70,10 @@ def main():
         )
         eyelinker.calibrate()
 
+    # Start recording eyetracker
+    if not testing:
+        eyelinker.start()
+
     # Practice until participant wants to stop
     practice(testing, settings)
 
@@ -88,10 +92,6 @@ def main():
     blocks = create_blocks(
         valid_trials, invalid_trials, N_BLOCKS, TRIALS_PER_BLOCK, PREDICTABILITY
     )
-
-    # Start recording eyetracker
-    if not testing:
-        eyelinker.start()
 
     # Start experiment
     try:
