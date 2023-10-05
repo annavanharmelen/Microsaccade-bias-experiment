@@ -69,7 +69,7 @@ def get_response(
             response = "clockwise"
             missed = False
             if not testing and eyetracker:
-                trigger = get_trigger("response_right", trial_condition, target_bar)
+                trigger = get_trigger("response_right", trial_condition, target_bar, change_direction)
                 eyetracker.tracker.send_message(f"trig{trigger}")
 
         elif "z" in pressed:
@@ -77,7 +77,7 @@ def get_response(
             response = "anticlockwise"
             missed = False
             if not testing and eyetracker:
-                trigger = get_trigger("response_left", trial_condition, target_bar)
+                trigger = get_trigger("response_left", trial_condition, target_bar, change_direction)
                 eyetracker.tracker.send_message(f"trig{trigger}")
 
     else:
@@ -85,7 +85,7 @@ def get_response(
         response = None
         missed = True
         if not testing and eyetracker:
-                trigger = get_trigger("response_missed", trial_condition, target_bar)
+                trigger = get_trigger("response_missed", trial_condition, target_bar, change_direction)
                 eyetracker.tracker.send_message(f"trig{trigger}")
 
 
