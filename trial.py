@@ -9,6 +9,7 @@ made by Anna van Harmelen, 2023
 
 from psychopy import visual
 from psychopy.core import wait
+from numpy import array
 from time import time, sleep
 from response import get_response, check_quit
 from stimuli import (
@@ -18,8 +19,10 @@ from stimuli import (
 from eyetracker import get_trigger
 import random
 
-COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
-ORIENTATION_TURN = 5
+#COLOURS = [[0.80, -0.40, -0.40], [-0.40, 0.80, -0.40], [-0.40, -0.40, 0.80]]
+COLOURS = array([[21, 165, 234], [133,193,18], [197,21,234], [234, 74, 21]])
+COLOURS = list((COLOURS - 128)/128)
+ORIENTATION_TURN = 2
 
 
 def generate_trial_characteristics(
@@ -181,15 +184,11 @@ def single_trial(
     # Show performance
     create_fixation_dot(settings)
     show_text(response["feedback"], settings["window"], (0, settings["deg2pix"](0.3)))
-
-    if not testing:
-        trigger = get_trigger("feedback_onset", trial_condition, target_bar)
-        eyetracker.tracker.send_message(f"trig{trigger}")
     settings["window"].flip()
     sleep(0.25)
 
     return {
-        "condition_code": get_trigger("stimuli_onset", trial_condition, target_bar),
+        "condition_code": get_trigger("stimuli_onset", trial_condition, target_bar, change_direction),
         **response,
     }
 
