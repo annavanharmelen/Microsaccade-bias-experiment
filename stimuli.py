@@ -10,8 +10,8 @@ from psychopy import visual
 from numpy import zeros
 from math import sqrt
 
-ECCENTRICITY = 4
-DOT_SIZE = 0.05  # diameter of circle
+ECCENTRICITY = 5
+DOT_SIZE = 0.1  # diameter of circle
 
 
 def create_fixation_dot(settings, colour="#eaeaea"):
@@ -53,7 +53,7 @@ def make_one_gabor(orientation, colour, position, settings):
     gabor_texture[:, :, 1] = colour[1]
     gabor_texture[:, :, 2] = colour[2]
     gabor_texture[:, :, 3] = -visual.filters.makeGrating(
-        settings["gabor_size"], gratType="sin", cycles=10.5, ori=orientation
+        settings["gabor_size"], gratType="sin", cycles=7.5, ori=orientation
     )
 
     # Create Gabor grating stimulus
