@@ -10,7 +10,7 @@ from psychopy import visual
 from psychopy.hardware.keyboard import Keyboard
 from math import degrees, atan2, pi
 
-GABOR_SIZE = 2  # diameter of Gabor
+GABOR_SIZE = 3  # diameter of Gabor
 
 
 def get_monitor_and_dir(testing: bool):
@@ -34,7 +34,7 @@ def get_monitor_and_dir(testing: bool):
             "distance": 70,  # in cm
         }
 
-        directory = r"C:\Users\Anna_vidi\Desktop\data"
+        directory = r"C:\Users\Anna_vidi\Desktop\microsaccade_data"
 
     return monitor, directory
 
@@ -42,7 +42,7 @@ def get_monitor_and_dir(testing: bool):
 def get_settings(monitor: dict, directory):
     # Initialise psychopy window
     window = visual.Window(
-        color=("#7F7F7F"),
+        color=([-0.5, -0.5, -0.5]),
         size=monitor["resolution"],
         units="pix",
         fullscr=True,
@@ -56,7 +56,9 @@ def get_settings(monitor: dict, directory):
     # Determine size of Gabor grating
     sizes = [64, 128, 256, 512, 1024]
     size_raw = round(GABOR_SIZE / degrees_per_pixel)
+    print(size_raw)
     size = min(sizes, key=lambda x: abs(x - size_raw))
+    print(size)
 
     return dict(
         deg2pix=lambda deg: round(deg / degrees_per_pixel),
