@@ -118,3 +118,6 @@ def practice(testing, settings):
         settings["window"].flip()
 
     wait_for_key(["space"], settings["keyboard"])
+
+    # Make sure the keystroke from starting the experiment isn't saved 
+    settings["keyboard"].clearEvents()
