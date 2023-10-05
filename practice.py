@@ -119,5 +119,5 @@ def practice(testing, settings):
 
     wait_for_key(["space"], settings["keyboard"])
 
-    # Make sure the keystroke from starting the experiment isn't saved 
+    # Make sure the keystroke from starting the experiment isn't saved
     settings["keyboard"].clearEvents()
