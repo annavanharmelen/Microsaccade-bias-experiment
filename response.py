@@ -100,7 +100,10 @@ def get_response(
     return {
         "response_time_in_ms": round(response_time * 1000, 2),
         "key_pressed": key,
-        "premature_keys": prematurely_pressed[0] if prematurely_pressed else None,
+        "premature_key": prematurely_pressed[0][0] if prematurely_pressed else None,
+        "premature_timing": round(prematurely_pressed[0][1] * 1000, 2)
+        if prematurely_pressed
+        else None,
         "missed": missed,
         **evaluate_response(change_direction, response),
     }
