@@ -18,7 +18,8 @@ from stimuli import (
 from eyetracker import get_trigger
 import random
 
-COLOURS = [[21, 165, 234], [133, 193, 18], [197, 21, 234], [234, 74, 21]]
+# COLOURS = [[21, 165, 234], [133, 193, 18], [197, 21, 234], [234, 74, 21]]
+COLOURS = [[19, 146, 206], [217, 103, 241], [101, 148, 14], [238, 104, 60]]
 COLOURS = [
     [(rgb_value / 128 - 1) for rgb_value in rgb_triplet] for rgb_triplet in COLOURS
 ]
