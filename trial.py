@@ -9,7 +9,6 @@ made by Anna van Harmelen, 2023
 
 from psychopy import visual
 from psychopy.core import wait
-from numpy import array
 from time import time, sleep
 from response import get_response, check_quit
 from stimuli import (
@@ -19,9 +18,10 @@ from stimuli import (
 from eyetracker import get_trigger
 import random
 
-COLOURS = list(
-    (array([[21, 165, 234], [133, 193, 18], [197, 21, 234], [234, 74, 21]]) - 128) / 128
-)
+COLOURS = [[21, 165, 234], [133, 193, 18], [197, 21, 234], [234, 74, 21]]
+COLOURS = [
+    [(rgb_value / 128 - 1) for rgb_value in rgb_triplet] for rgb_triplet in COLOURS
+]
 ORIENTATION_TURN = 2
 
 
