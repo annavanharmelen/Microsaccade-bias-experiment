@@ -121,7 +121,7 @@ def single_trial(
         (0, lambda: 0 / 0, None),  # initial one to make life easier
         (ITI / 1000, lambda: create_fixation_dot(settings), None),
         (
-            0.5,
+            0.75,
             lambda: create_stimuli_frame(
                 left_orientation, right_orientation, stimuli_colours, settings
             ),
