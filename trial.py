@@ -182,9 +182,13 @@ def single_trial(
         target_bar,
     )
 
-    # Show performance
+    # Show performance (and feedback on premature key usage if necessary)
     create_fixation_dot(settings)
     show_text(response["feedback"], settings["window"], (0, settings["deg2pix"](0.3)))
+    
+    if response["premature_pressed"] == True:
+        show_text("!", settings["window"], (0, -settings["deg2pix"](0.3)))
+    
     settings["window"].flip()
     sleep(0.25)
 
