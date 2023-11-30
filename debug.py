@@ -17,10 +17,15 @@ from block import create_trial_list, create_blocks
 import pandas as pd
 import datetime as dt
 
-c = 3
-a = (sqrt(1 / 2 * c**2))
-#random.shuffle(durations)
-print(a)
+GABOR_SIZE = 3;
+
+degrees_per_pixel = degrees(atan2(0.5 * 53, 70)) / (0.5 * 1920)
+
+sizes = [64, 128, 256, 512, 1024]
+size_raw = round(GABOR_SIZE / degrees_per_pixel)
+print(size_raw)
+size = min(sizes, key=lambda x: abs(x - size_raw))
+print(size)
 
 # stop here
 import sys
