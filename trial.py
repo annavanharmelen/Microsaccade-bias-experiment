@@ -155,13 +155,13 @@ def single_trial(
 
     # !!! The timing you pass to do_while_showing is the timing for the previously drawn screen. !!!
     for index, (duration, _, frame) in enumerate(screens[:-1]):
+        # Check for pressed 'q'
+        check_quit(settings["keyboard"])
+
         # Send trigger if not testing
         if not testing and frame:
             trigger = get_trigger(frame, trial_condition, target_bar, change_direction)
             eyetracker.tracker.send_message(f"trig{trigger}")
-
-        # Check for pressed 'q'
-        check_quit(settings["keyboard"])
 
         # Draw the next screen while showing the current one
         do_while_showing(duration, screens[index + 1][1], settings["window"])
