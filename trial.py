@@ -114,6 +114,9 @@ def single_trial(
     testing,
     eyetracker=None,
 ):
+    if eyetracker:
+        print(eyetracker.sample()) #get the sample in the form of a tuple
+
     # Initial fixation cross to eliminate jitter caused by for loop
     create_fixation_dot(settings)
 
