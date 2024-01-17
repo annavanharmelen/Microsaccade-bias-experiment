@@ -48,7 +48,7 @@ class Eyelinker:
         self.tracker.close_edf()
 
     def sample(self):
-        return self.tracker.getNewestSample()
+        return self.tracker.gaze_data()
 
 
 def get_trigger(frame, condition, target_position, change_direction):
