@@ -47,6 +47,9 @@ class Eyelinker:
         self.tracker.transfer_edf()
         self.tracker.close_edf()
 
+    def sample(self):
+        return self.tracker.getNewestSample()
+
 
 def get_trigger(frame, condition, target_position, change_direction):
     condition_marker = {"invalid": 1, "valid": 2}[condition]
