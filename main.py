@@ -73,6 +73,8 @@ def main():
     # Start recording eyetracker
     if not testing:
         eyelinker.start()
+        sample = eyelinker.sample() #get the sample in the form of a tuple
+        print(sample)
 
     # Practice until participant wants to stop
     practice(testing, settings)
