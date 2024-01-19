@@ -84,16 +84,16 @@ def generate_trial_characteristics(
     }
 
 
-def do_while_showing(waiting_time, something_to_do, window, eyetracker=None):
+def do_while_showing(waiting_time, something_to_do, settings, eyetracker=None):
     """
     Show whatever is drawn to the screen for exactly `waiting_time` period,
     while doing `something_to_do` in the mean time.
     """
-    window.flip()
+    settings["window"].flip()
     start = time()
     something_to_do()
 
-    sample_while_wait(start, waiting_time, eyetracker)
+    sample_while_wait(start, waiting_time, eyetracker, settings)
 
 def single_trial(
     static_duration,
@@ -114,9 +114,7 @@ def single_trial(
     testing,
     eyetracker=None,
 ):
-    if eyetracker:
-        print(eyetracker.sample()) #get the sample in the form of a tuple
-
+    
     # Initial fixation cross to eliminate jitter caused by for loop
     create_fixation_dot(settings)
 
@@ -164,7 +162,7 @@ def single_trial(
             eyetracker.tracker.send_message(f"trig{trigger}")
 
         # Draw the next screen while showing the current one
-        do_while_showing(duration, screens[index + 1][1], settings["window"])
+        do_while_showing(duration, screens[index + 1][1], settings, eyetracker)
 
     # The for loop only draws the last frame, never shows it
     # So show it here
