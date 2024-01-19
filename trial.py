@@ -8,7 +8,6 @@ made by Anna van Harmelen, 2023
 """
 
 from psychopy import visual
-from psychopy.core import wait
 from time import time, sleep
 from response import get_response, check_quit, sample_while_wait
 from stimuli import (
