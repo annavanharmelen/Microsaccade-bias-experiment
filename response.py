@@ -7,11 +7,13 @@ made by Anna van Harmelen, 2023
 """
 
 from psychopy import event
+from psychopy.core import wait
 from psychopy.hardware.keyboard import Keyboard
 from time import time
 from eyetracker import get_trigger
 
-RESPONSE_DIAL_SIZE = 2
+SAMPLE_DELAY = 15
+"""Time to wait in between eyetracking samples in milliseconds"""
 
 
 def evaluate_response(change_direction, response):
@@ -56,7 +58,9 @@ def get_response(
     keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    pressed = event.waitKeys(keyList=["z", "m", "q"], maxWait=2)
+    # deze wordt dus kut
+    pressed = event.getKeys(keyList=["z", "m", "q"], maxWait=2)
+    sample_while_wait(idle_reaction_time_start, 2000, eyetracker, settings, )
 
     response_time = time() - idle_reaction_time_start
 
@@ -139,3 +143,24 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
     # so possibly not even worth having, but
     # being very precise is very cool kids.
     wait(waiting_time - (time() - start))
+
+
+def check_gaze_position(sample, settings):
+    middle_x = settings["monitor"]["resolution"][0] // 2
+    middle_y = settings["monitor"]["resolution"][1] // 2
+    px_per_dva = settings["deg2pix"](1)
+
+    x_left_bound = middle_x - px_per_dva
+    x_right_bound = middle_x + px_per_dva
+    y_down_bound = middle_y - px_per_dva
+    y_up_bound = middle_y + px_per_dva
+
+    if (
+        x_left_bound <= sample[0] <= x_right_bound
+        and y_down_bound <= sample[1] <= y_up_bound
+    ):
+        allowed = True
+    else:
+        allowed = False
+
+    return allowed
