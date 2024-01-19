@@ -113,22 +113,22 @@ def single_trial(
     testing,
     eyetracker=None,
 ):
-    
+
     # Initial fixation cross to eliminate jitter caused by for loop
     create_fixation_dot(settings)
 
     screens = [
         (0, lambda: 0 / 0, None),  # initial one to make life easier
-        (ITI / 1000, lambda: create_fixation_dot(settings), None),
+        (ITI, lambda: create_fixation_dot(settings), None),
         (
-            0.75,
+            750,
             lambda: create_stimuli_frame(
                 left_orientation, right_orientation, stimuli_colours, settings
             ),
             "stimuli_onset",
         ),
         (
-            static_duration / 1000,
+            static_duration,
             lambda: create_stimuli_frame(
                 left_orientation,
                 right_orientation,
@@ -162,7 +162,7 @@ def single_trial(
 
         # Draw the next screen while showing the current one
         do_while_showing(duration, screens[index + 1][1], settings, eyetracker)
-
+    
     # The for loop only draws the last frame, never shows it
     # So show it here
     if not testing:
