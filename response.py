@@ -58,9 +58,13 @@ def get_response(
     keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    # deze wordt dus kut
-    pressed = event.getKeys(keyList=["z", "m", "q"], maxWait=2)
-    sample_while_wait(idle_reaction_time_start, 2000, eyetracker, settings, )
+    pressed = sample_while_wait(
+        idle_reaction_time_start,
+        2000,
+        eyetracker,
+        settings,
+        lambda: keyboard.getKeys(keyList=["z", "m", "q"]),
+    )
 
     response_time = time() - idle_reaction_time_start
 
@@ -132,8 +136,10 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
     while (time() - start) < (waiting_time - SAMPLE_DELAY):
         loop_start = time()
         if stuff_to_do:
-            stuff_to_do()  # hier kijk je naar toetsknopjesdrukjes
-
+            result = stuff_to_do()  # hier kijk je naar toetsknopjesdrukjes
+            if result:
+                return result
+            
         sample = eyetracker.sample()
         check_gaze_position(sample, settings)
 
