@@ -133,7 +133,7 @@ def check_quit(keyboard):
 
 def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=None):
     # loop over sampling + anything else that needs to be done until time is over
-    while (time() - start) < (waiting_time - SAMPLE_DELAY):
+    while (time() - start) * 1000 < (waiting_time - SAMPLE_DELAY):
         loop_start = time()
         if stuff_to_do:
             result = stuff_to_do()  # hier kijk je naar toetsknopjesdrukjes
@@ -143,12 +143,12 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
         sample = eyetracker.sample()
         check_gaze_position(sample, settings)
 
-        wait(SAMPLE_DELAY - (time() - loop_start))
+        wait(SAMPLE_DELAY / 1000 - (time() - loop_start))
 
     # the following should wait at most SAMPLE_DELAY
     # so possibly not even worth having, but
     # being very precise is very cool kids.
-    wait(waiting_time - (time() - start))
+    wait(waiting_time / 1000 - (time() - start))
 
 
 def check_gaze_position(sample, settings):
