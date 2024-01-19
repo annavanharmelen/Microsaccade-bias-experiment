@@ -17,6 +17,18 @@ from block import create_trial_list, create_blocks
 import pandas as pd
 import datetime as dt
 
+degrees_per_pixel = degrees(atan2(0.5 * 53, 70)) / (0.5 * 1920)
+pixels = round(1 / degrees_per_pixel)
+print("1 dva in pixels: " + str(pixels))
+
+print("1920 pixels in dva: " + str(1920/pixels))
+
+
+# stop here
+import sys
+
+sys.exit()
+
 GABOR_SIZE = 3;
 
 degrees_per_pixel = degrees(atan2(0.5 * 53, 70)) / (0.5 * 1920)
@@ -26,11 +38,6 @@ size_raw = round(GABOR_SIZE / degrees_per_pixel)
 print(size_raw)
 size = min(sizes, key=lambda x: abs(x - size_raw))
 print(size)
-
-# stop here
-import sys
-
-sys.exit()
 
 window = visual.Window(color="#7F7F7F", size=[1920, 1080], units="pix", fullscr=True)
 
