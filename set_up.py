@@ -56,9 +56,7 @@ def get_settings(monitor: dict, directory):
     # Determine size of Gabor grating
     sizes = [64, 128, 256, 512, 1024]
     size_raw = round(GABOR_SIZE / degrees_per_pixel)
-    print(size_raw)
     size = min(sizes, key=lambda x: abs(x - size_raw))
-    print(size)
 
     return dict(
         deg2pix=lambda deg: round(deg / degrees_per_pixel),
