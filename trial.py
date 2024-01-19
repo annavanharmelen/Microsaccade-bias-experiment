@@ -10,7 +10,7 @@ made by Anna van Harmelen, 2023
 from psychopy import visual
 from psychopy.core import wait
 from time import time, sleep
-from response import get_response, check_quit
+from response import get_response, check_quit, sample_while_wait
 from stimuli import (
     create_fixation_dot,
     create_stimuli_frame,
@@ -84,7 +84,7 @@ def generate_trial_characteristics(
     }
 
 
-def do_while_showing(waiting_time, something_to_do, window):
+def do_while_showing(waiting_time, something_to_do, window, eyetracker=None):
     """
     Show whatever is drawn to the screen for exactly `waiting_time` period,
     while doing `something_to_do` in the mean time.
@@ -92,8 +92,8 @@ def do_while_showing(waiting_time, something_to_do, window):
     window.flip()
     start = time()
     something_to_do()
-    wait(waiting_time - (time() - start))
 
+    sample_while_wait(start, waiting_time, eyetracker)
 
 def single_trial(
     static_duration,
