@@ -24,7 +24,7 @@ from numpy import mean
 # 2. Practice full trials
 
 
-def practice(testing, settings):
+def practice(testing, settings, eyetracker=None):
     # Show explanation
     show_text(
         f"Welcome to the practice trials. You will practice each part until you press Q. \
@@ -59,7 +59,7 @@ def practice(testing, settings):
 
             settings["window"].flip()
             response = get_response(
-                settings, testing, None, "valid", change_direction, None
+                settings, testing, eyetracker, "valid", change_direction, None
             )
 
             show_text(
@@ -103,7 +103,7 @@ def practice(testing, settings):
                 change_direction,
             )
 
-            report: dict = single_trial(**stimulus, settings=settings, testing=True)
+            report: dict = single_trial(**stimulus, settings=settings, testing=True, eyetracker=eyetracker)
 
             performance.append(report["correct_key"])
 
