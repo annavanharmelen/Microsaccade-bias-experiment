@@ -141,7 +141,9 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
                 return result
             
         sample = eyetracker.sample()
-        check_gaze_position(sample, settings)
+        print(sample)
+        allowed = check_gaze_position(sample, settings)
+        print(allowed)
 
         wait(SAMPLE_DELAY / 1000 - (time() - loop_start))
 
