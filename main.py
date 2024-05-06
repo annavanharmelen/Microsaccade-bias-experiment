@@ -39,6 +39,7 @@ def main():
     """
 
     # Set whether this is a test run or not
+    # NOTE: this actually doesn't work since we can't test anymore without eyetracker
     testing = False
 
     # Get monitor and directory information
