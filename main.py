@@ -24,6 +24,7 @@ from block import (
     finish,
     quick_finish,
 )
+import traceback
 
 N_BLOCKS = 20
 TRIALS_PER_BLOCK = 40
@@ -76,7 +77,10 @@ def main():
         eyelinker.start()
 
     # Practice until participant wants to stop
-    practice(testing, settings, eyetracker=None if testing else eyelinker)
+    try:
+        practice(testing, settings, eyetracker=None if testing else eyelinker)
+    except Exception as e:
+       print(traceback.format_exc())
 
     # Initialise some stuff
     start_of_experiment = time()
@@ -171,7 +175,7 @@ def main():
 
     except Exception as e:
         if not isinstance(e, KeyboardInterrupt):
-            print(e)
+            print(traceback.format_exc())
 
     finally:
         # Stop eyetracker (this should also save the data)
