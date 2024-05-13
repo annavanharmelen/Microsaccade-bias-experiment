@@ -11,6 +11,7 @@ from psychopy.core import wait
 from psychopy.hardware.keyboard import Keyboard
 from time import time
 from eyetracker import get_trigger
+from math import sqrt
 
 SAMPLE_DELAY = 15
 """Time to wait in between eyetracking samples in milliseconds"""
@@ -156,16 +157,10 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
 def check_gaze_position(sample, settings):
     middle_x = settings["monitor"]["resolution"][0] // 2
     middle_y = settings["monitor"]["resolution"][1] // 2
-    px_per_dva = settings["deg2pix"](1)
-
-    x_left_bound = middle_x - px_per_dva
-    x_right_bound = middle_x + px_per_dva
-    y_down_bound = middle_y - px_per_dva
-    y_up_bound = middle_y + px_per_dva
+    allowed_radius = settings["deg2pix"](1)
 
     if (
-        x_left_bound <= sample[0] <= x_right_bound
-        and y_down_bound <= sample[1] <= y_up_bound
+        sqrt((sample[0] - middle_x)^2 + (sample[1] - middle_y)^2) <= allowed_radius
     ):
         allowed = True
     else:
