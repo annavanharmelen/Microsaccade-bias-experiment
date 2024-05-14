@@ -159,10 +159,15 @@ def check_gaze_position(sample, settings):
     middle_y = settings["monitor"]["resolution"][1] // 2
     allowed_radius = settings["deg2pix"](1)
 
+    # Check for circular allowed range of 1 dva radius around middle pixel 
     if (
         sqrt((sample[0] - middle_x)^2 + (sample[1] - middle_y)^2) <= allowed_radius
     ):
         allowed = True
+    # Check for blink values
+    elif sample[0] == -32768.0 or sample[1] == -32768.0:
+        allowed = True
+    # Anything else is not allowed
     else:
         allowed = False
 
