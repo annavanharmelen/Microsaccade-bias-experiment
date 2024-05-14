@@ -115,9 +115,9 @@ def get_response(
         "key_pressed": key,
         "premature_pressed": True if prematurely_pressed else False,
         "premature_key": prematurely_pressed[0][0] if prematurely_pressed else None,
-        "premature_timing": round(prematurely_pressed[0][1] * 1000, 2)
-        if prematurely_pressed
-        else None,
+        "premature_timing": (
+            round(prematurely_pressed[0][1] * 1000, 2) if prematurely_pressed else None
+        ),
         "missed": missed,
         "broke_fixation": broke_fixation,
         **evaluate_response(change_direction, response),
@@ -138,7 +138,7 @@ def check_quit(keyboard):
 
 
 def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=None):
-    broke_fixation = False 
+    broke_fixation = False
 
     # loop over sampling + anything else that needs to be done until time is over
     while (time() - start) * 1000 < (waiting_time - SAMPLE_DELAY):
@@ -147,11 +147,11 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
             result = stuff_to_do()  # hier kijk je naar toetsknopjesdrukjes
             if result:
                 return broke_fixation, result
-            
+
         sample = eyetracker.sample()
         print(sample)
         allowed = check_gaze_position(sample, settings)
-        
+
         if not allowed:
             broke_fixation = True
             return broke_fixation
