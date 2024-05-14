@@ -58,6 +58,11 @@ def get_settings(monitor: dict, directory):
     size_raw = round(GABOR_SIZE / degrees_per_pixel)
     size = min(sizes, key=lambda x: abs(x - size_raw))
 
+    # Determine range for allowed gaze locations
+    middle_x = monitor["resolution"][0] // 2
+    middle_y = monitor["resolution"][1] // 2
+    allowed_radius = round(1 / degrees_per_pixel)
+
     return dict(
         deg2pix=lambda deg: round(deg / degrees_per_pixel),
         gabor_size=size,
@@ -66,4 +71,6 @@ def get_settings(monitor: dict, directory):
         mouse=visual.CustomMouse(win=window, visible=False),
         monitor=monitor,
         directory=directory,
+        middle_pixel=(middle_x, middle_y),
+        allowed_radius=allowed_radius,
     )

@@ -167,13 +167,14 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
 
 
 def check_gaze_position(sample, settings):
-    middle_x = settings["monitor"]["resolution"][0] // 2
-    middle_y = settings["monitor"]["resolution"][1] // 2
-    allowed_radius = settings["deg2pix"](1)
-
-    # Check for circular allowed range of 1 dva radius around middle pixel 
+    # Check for circular allowed range of 1 dva radius around middle pixel
     if (
-        sqrt((sample[0] - middle_x)^2 + (sample[1] - middle_y)^2) <= allowed_radius
+        sqrt(
+            (sample[0] - settings["middle_pixel"][0])
+            ^ 2 + (sample[1] - settings["middle_pixel"][1])
+            ^ 2
+        )
+        <= settings["allowed_radius"]
     ):
         allowed = True
     # Check for blink values
