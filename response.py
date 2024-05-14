@@ -59,13 +59,17 @@ def get_response(
     keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    pressed = sample_while_wait(
+    broke_fixation, pressed = sample_while_wait(
         idle_reaction_time_start,
         2000,
         eyetracker,
         settings,
         lambda: keyboard.getKeys(keyList=["z", "m", "q"]),
     )
+
+    # Abort trial if fixation has been broken
+    if broke_fixation:
+        return
 
     response_time = time() - idle_reaction_time_start
 
@@ -115,6 +119,7 @@ def get_response(
         if prematurely_pressed
         else None,
         "missed": missed,
+        "broke_fixation": broke_fixation,
         **evaluate_response(change_direction, response),
     }
 
@@ -133,18 +138,23 @@ def check_quit(keyboard):
 
 
 def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=None):
+    broke_fixation = False 
+
     # loop over sampling + anything else that needs to be done until time is over
     while (time() - start) * 1000 < (waiting_time - SAMPLE_DELAY):
         loop_start = time()
         if stuff_to_do:
             result = stuff_to_do()  # hier kijk je naar toetsknopjesdrukjes
             if result:
-                return result
+                return broke_fixation, result
             
         sample = eyetracker.sample()
         print(sample)
         allowed = check_gaze_position(sample, settings)
-        print(allowed)
+        
+        if not allowed:
+            broke_fixation = True
+            return broke_fixation
 
         wait(SAMPLE_DELAY / 1000 - (time() - loop_start))
 
@@ -152,6 +162,8 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
     # so possibly not even worth having, but
     # being very precise is very cool kids.
     wait(waiting_time / 1000 - (time() - start))
+
+    return broke_fixation
 
 
 def check_gaze_position(sample, settings):

@@ -92,7 +92,10 @@ def do_while_showing(waiting_time, something_to_do, settings, eyetracker=None):
     start = time()
     something_to_do()
 
-    sample_while_wait(start, waiting_time, eyetracker, settings)
+    broke_fixation = sample_while_wait(start, waiting_time, eyetracker, settings)
+
+    return broke_fixation
+
 
 def single_trial(
     static_duration,
@@ -161,8 +164,18 @@ def single_trial(
             eyetracker.tracker.send_message(f"trig{trigger}")
 
         # Draw the next screen while showing the current one
-        do_while_showing(duration, screens[index + 1][1], settings, eyetracker)
-    
+        broke_fixation = do_while_showing(
+            duration, screens[index + 1][1], settings, eyetracker
+        )
+
+        # Abort trial if fixation has been broken
+        if broke_fixation:
+            return {
+                "condition_code": get_trigger(
+                    "stimuli_onset", trial_condition, target_bar, change_direction
+                ),
+            }
+
     # The for loop only draws the last frame, never shows it
     # So show it here
     if not testing:
@@ -185,10 +198,10 @@ def single_trial(
     # Show performance (and feedback on premature key usage if necessary)
     create_fixation_dot(settings)
     show_text(response["feedback"], settings["window"], (0, settings["deg2pix"](0.3)))
-    
+
     if response["premature_pressed"] == True:
         show_text("!", settings["window"], (0, -settings["deg2pix"](0.3)))
-    
+
     settings["window"].flip()
     sleep(0.25)
 
