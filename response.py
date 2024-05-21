@@ -155,7 +155,7 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
 
         if not allowed:
             broke_fixation = True
-            return broke_fixation, sample
+            return broke_fixation, sample, None
 
         wait(SAMPLE_DELAY / 1000 - (time() - loop_start))
 
@@ -164,7 +164,7 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
     # being very precise is very cool kids.
     wait(waiting_time / 1000 - (time() - start))
 
-    return broke_fixation, sample
+    return broke_fixation, sample, None
 
 
 def check_gaze_position(sample, settings):
