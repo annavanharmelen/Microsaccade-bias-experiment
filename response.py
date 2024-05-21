@@ -151,7 +151,6 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
                 return broke_fixation, sample, result
 
         sample = eyetracker.sample()
-        print(sample)
         allowed = check_gaze_position(sample, settings)
 
         if not allowed:
