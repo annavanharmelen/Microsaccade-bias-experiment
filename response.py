@@ -144,7 +144,7 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
     while (time() - start) * 1000 < (waiting_time - SAMPLE_DELAY):
         loop_start = time()
         if stuff_to_do:
-            result = stuff_to_do()  # hier kijk je naar toetsknopjesdrukjes
+            result = stuff_to_do()  # this keeps checking for key presses
             if result:
                 return broke_fixation, result
 
