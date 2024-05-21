@@ -59,7 +59,7 @@ def get_response(
     keyboard.clearEvents()
 
     # Wait indefinitely until the participant starts giving an answer
-    broke_fixation, pressed = sample_while_wait(
+    broke_fixation, last_sample, pressed = sample_while_wait(
         idle_reaction_time_start,
         2000,
         eyetracker,
@@ -120,6 +120,7 @@ def get_response(
         ),
         "missed": missed,
         "broke_fixation": broke_fixation,
+        "last_sample": last_sample,
         **evaluate_response(change_direction, response),
     }
 
@@ -139,6 +140,7 @@ def check_quit(keyboard):
 
 def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=None):
     broke_fixation = False
+    sample = None # this is necessary in case a button is pressed before the first sample is returned 
 
     # loop over sampling + anything else that needs to be done until time is over
     while (time() - start) * 1000 < (waiting_time - SAMPLE_DELAY):
@@ -146,7 +148,7 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
         if stuff_to_do:
             result = stuff_to_do()  # this keeps checking for key presses
             if result:
-                return broke_fixation, result
+                return broke_fixation, sample, result
 
         sample = eyetracker.sample()
         print(sample)
@@ -154,7 +156,7 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
 
         if not allowed:
             broke_fixation = True
-            return broke_fixation
+            return broke_fixation, sample
 
         wait(SAMPLE_DELAY / 1000 - (time() - loop_start))
 
@@ -163,7 +165,7 @@ def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=Non
     # being very precise is very cool kids.
     wait(waiting_time / 1000 - (time() - start))
 
-    return broke_fixation
+    return broke_fixation, sample
 
 
 def check_gaze_position(sample, settings):

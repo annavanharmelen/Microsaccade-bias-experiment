@@ -92,9 +92,9 @@ def do_while_showing(waiting_time, something_to_do, settings, eyetracker=None):
     start = time()
     something_to_do()
 
-    broke_fixation = sample_while_wait(start, waiting_time, eyetracker, settings)
+    broke_fixation, last_sample = sample_while_wait(start, waiting_time, eyetracker, settings)
 
-    return broke_fixation
+    return broke_fixation, last_sample
 
 
 def single_trial(
@@ -164,7 +164,7 @@ def single_trial(
             eyetracker.tracker.send_message(f"trig{trigger}")
 
         # Draw the next screen while showing the current one
-        broke_fixation = do_while_showing(
+        broke_fixation, last_sample = do_while_showing(
             duration, screens[index + 1][1], settings, eyetracker
         )
 
@@ -174,6 +174,8 @@ def single_trial(
                 "condition_code": get_trigger(
                     "stimuli_onset", trial_condition, target_bar, change_direction
                 ),
+                "broke_fixation": broke_fixation,
+                "last_sample": last_sample,
             }
 
     # The for loop only draws the last frame, never shows it
