@@ -170,9 +170,8 @@ def check_gaze_position(sample, settings):
     # Check for circular allowed range of 1 dva radius around middle pixel
     if (
         sqrt(
-            (sample[0] - settings["middle_pixel"][0])
-            ^ 2 + (sample[1] - settings["middle_pixel"][1])
-            ^ 2
+            (sample[0] - settings["middle_pixel"][0]) ** 2
+            + (sample[1] - settings["middle_pixel"][1]) ** 2
         )
         <= settings["allowed_radius"]
     ):
