@@ -25,3 +25,5 @@ To make sure the experiment runs correctly, open the set_up.py file to enter the
 
 ## Running
 The experiment runs in its entirety (including some explanation, practice trials and breaks) if you run `python main.py`.
+
+Note: currently the "test version" of this experiment doesn't run, as the experiment is dependent on a connection to a functioning eyetracker.
