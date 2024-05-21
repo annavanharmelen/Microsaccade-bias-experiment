@@ -140,7 +140,7 @@ def check_quit(keyboard):
 
 def sample_while_wait(start, waiting_time, eyetracker, settings, stuff_to_do=None):
     broke_fixation = False
-    sample = None # this is necessary in case a button is pressed before the first sample is returned 
+    sample = None  # this is necessary in case a button is pressed before the first sample is returned
 
     # loop over sampling + anything else that needs to be done until time is over
     while (time() - start) * 1000 < (waiting_time - SAMPLE_DELAY):

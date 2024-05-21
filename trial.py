@@ -92,7 +92,9 @@ def do_while_showing(waiting_time, something_to_do, settings, eyetracker=None):
     start = time()
     something_to_do()
 
-    broke_fixation, last_sample = sample_while_wait(start, waiting_time, eyetracker, settings)
+    broke_fixation, last_sample = sample_while_wait(
+        start, waiting_time, eyetracker, settings
+    )
 
     return broke_fixation, last_sample
 
