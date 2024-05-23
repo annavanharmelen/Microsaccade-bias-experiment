@@ -73,7 +73,7 @@ def practice(testing, settings, eyetracker=None):
             settings["window"].flip()
             sleep(0.5)
 
-            if response["feedback"] == 'you broke fixation':
+            if response["feedback"] == "you broke fixation":
                 sleep(0.5)
 
                 # Give people a chance to recover fixation
@@ -112,7 +112,9 @@ def practice(testing, settings, eyetracker=None):
                 change_direction,
             )
 
-            report: dict = single_trial(**stimulus, settings=settings, testing=True, eyetracker=eyetracker)
+            report: dict = single_trial(
+                **stimulus, settings=settings, testing=True, eyetracker=eyetracker
+            )
 
             performance.append(report["correct_key"])
 

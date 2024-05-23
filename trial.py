@@ -174,13 +174,15 @@ def single_trial(
         if broke_fixation:
             response = {
                 "exit_stage": frame,
-                "feedback": 'you broke fixation',
+                "feedback": "you broke fixation",
                 "correct_key": float("NaN"),
             }
             # Show performance (and feedback on premature key usage if necessary)
             settings["window"].flip()
             create_fixation_dot(settings)
-            show_text(response["feedback"], settings["window"], (0, settings["deg2pix"](0.3)))
+            show_text(
+                response["feedback"], settings["window"], (0, settings["deg2pix"](0.3))
+            )
 
             settings["window"].flip()
             sleep(1.0)
@@ -196,7 +198,7 @@ def single_trial(
                 ),
                 "broke_fixation": broke_fixation,
                 "last_sample": last_sample,
-                **response
+                **response,
             }
 
     # The for loop only draws the last frame, never shows it

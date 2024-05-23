@@ -80,7 +80,7 @@ def main():
     try:
         practice(testing, settings, eyetracker=None if testing else eyelinker)
     except Exception as e:
-       print(traceback.format_exc())
+        print(traceback.format_exc())
 
     # Initialise some stuff
     start_of_experiment = time()
@@ -101,9 +101,9 @@ def main():
     # Start experiment
     try:
         for block in blocks:
-            #Clear any previous keyboard events
+            # Clear any previous keyboard events
             settings["keyboard"].clearEvents()
-            
+
             # Update block number
             block_number += 1
 
