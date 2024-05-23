@@ -69,7 +69,17 @@ def get_response(
 
     # Abort trial if fixation has been broken
     if broke_fixation:
-        return
+        return {
+        "premature_pressed": True if prematurely_pressed else False,
+        "premature_key": prematurely_pressed[0][0] if prematurely_pressed else None,
+        "premature_timing": (
+            round(prematurely_pressed[0][1] * 1000, 2) if prematurely_pressed else None
+        ),
+        "broke_fixation": broke_fixation,
+        "last_sample": last_sample,
+        "feedback": 'you broke fixation',
+        "correct_key": None,
+    }
 
     response_time = time() - idle_reaction_time_start
 
