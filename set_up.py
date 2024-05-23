@@ -61,7 +61,7 @@ def get_settings(monitor: dict, directory):
     # Determine range for allowed gaze locations
     middle_x = monitor["resolution"][0] // 2
     middle_y = monitor["resolution"][1] // 2
-    allowed_radius = round(1 / degrees_per_pixel)
+    allowed_radius = round(2 / degrees_per_pixel)
 
     return dict(
         deg2pix=lambda deg: round(deg / degrees_per_pixel),
