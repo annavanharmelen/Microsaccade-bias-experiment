@@ -33,6 +33,7 @@ def practice(testing, settings, eyetracker=None):
     )
     settings["window"].flip()
     wait_for_key(["space"], settings["keyboard"])
+    settings["keyboard"].clearEvents()
 
     # Practice single stimulus until user chooses to stop
     try:
@@ -72,6 +73,14 @@ def practice(testing, settings, eyetracker=None):
             settings["window"].flip()
             sleep(0.5)
 
+            if response["feedback"] == 'you broke fixation':
+                sleep(0.5)
+
+                # Give people a chance to recover fixation
+                create_fixation_dot(settings)
+                settings["window"].flip()
+                sleep(0.5)
+
     except KeyboardInterrupt:
         settings["window"].flip()
         show_text(
@@ -84,7 +93,7 @@ def practice(testing, settings, eyetracker=None):
         wait_for_key(["space"], settings["keyboard"])
 
     # Practice trials until user chooses to stop
-
+    settings["keyboard"].clearEvents()
     performance = []
 
     try:

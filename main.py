@@ -101,6 +101,9 @@ def main():
     # Start experiment
     try:
         for block in blocks:
+            #Clear any previous keyboard events
+            settings["keyboard"].clearEvents()
+            
             # Update block number
             block_number += 1
 
