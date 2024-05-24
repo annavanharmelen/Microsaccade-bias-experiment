@@ -12,10 +12,11 @@ from participantinfo import get_participant_details
 from set_up import get_monitor_and_dir, get_settings
 from eyetracker import Eyelinker
 from trial import single_trial, generate_trial_characteristics
-from time import time
+from time import time, sleep
 from numpy import mean
 from practice import practice
 import datetime as dt
+from stimuli import create_fixation_dot
 from block import (
     create_trial_list,
     create_blocks,
@@ -109,6 +110,11 @@ def main():
 
             # Create temporary variable for saving block performance
             block_performance = []
+
+            # Show starting screen
+            create_fixation_dot(settings)
+            settings["window"].flip()
+            sleep(1.0)
 
             # Run trials per pseudo-randomly created info
             for target_location, direction, trial_length, congruency in (
