@@ -8,6 +8,7 @@ made by Anna van Harmelen, 2023
 """
 
 from psychopy import visual
+from psychopy.core import wait
 from time import time, sleep
 from response import get_response, check_quit, sample_while_wait
 from stimuli import (
@@ -83,7 +84,9 @@ def generate_trial_characteristics(
     }
 
 
-def do_while_showing(waiting_time, something_to_do, settings, eyetracker=None):
+def do_while_showing(
+    waiting_time, something_to_do, check_gaze, settings, eyetracker=None
+):
     """
     Show whatever is drawn to the screen for exactly `waiting_time` period,
     while doing `something_to_do` in the mean time.
@@ -92,9 +95,14 @@ def do_while_showing(waiting_time, something_to_do, settings, eyetracker=None):
     start = time()
     something_to_do()
 
-    broke_fixation, last_sample, _ = sample_while_wait(
-        start, waiting_time, eyetracker, settings
-    )
+    if check_gaze:
+        broke_fixation, last_sample, _ = sample_while_wait(
+            start, waiting_time, eyetracker, settings
+        )
+    else:
+        broke_fixation = False
+        last_sample = None
+        wait(waiting_time - (time() - start))
 
     return broke_fixation, last_sample
 
@@ -123,14 +131,15 @@ def single_trial(
     create_fixation_dot(settings)
 
     screens = [
-        (0, lambda: 0 / 0, None),  # initial one to make life easier
-        (ITI, lambda: create_fixation_dot(settings), None),
+        (0, lambda: 0 / 0, None, None),  # initial one to make life easier
+        (ITI, lambda: create_fixation_dot(settings), None, False),
         (
             750,
             lambda: create_stimuli_frame(
                 left_orientation, right_orientation, stimuli_colours, settings
             ),
             "stimuli_onset",
+            True,
         ),
         (
             static_duration,
@@ -142,6 +151,7 @@ def single_trial(
                 capture_colour,
             ),
             "cue_onset",
+            True,
         ),
         (
             None,
@@ -152,11 +162,13 @@ def single_trial(
                 settings,
                 capture_colour,
             ),
+            None,
+            True,
         ),
     ]
 
     # !!! The timing you pass to do_while_showing is the timing for the previously drawn screen. !!!
-    for index, (duration, _, frame) in enumerate(screens[:-1]):
+    for index, (duration, _, frame, check_gaze) in enumerate(screens[:-1]):
         # Check for pressed 'q'
         check_quit(settings["keyboard"])
 
@@ -167,7 +179,7 @@ def single_trial(
 
         # Draw the next screen while showing the current one
         broke_fixation, last_sample = do_while_showing(
-            duration, screens[index + 1][1], settings, eyetracker
+            duration, screens[index + 1][1], check_gaze, settings, eyetracker
         )
 
         # Abort trial if fixation has been broken
