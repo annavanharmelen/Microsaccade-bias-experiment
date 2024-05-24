@@ -102,7 +102,7 @@ def do_while_showing(
     else:
         broke_fixation = False
         last_sample = None
-        wait(waiting_time - (time() - start))
+        wait(waiting_time / 1000 - (time() - start))
 
     return broke_fixation, last_sample
 
