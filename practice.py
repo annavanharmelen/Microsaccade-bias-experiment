@@ -122,7 +122,7 @@ def practice(testing, settings, eyetracker=None):
         settings["window"].flip()
         show_text(
             f"You decided to stop practicing. "
-            f"\nDuring this practice, you answered correctly {round(mean(performance) * 100) if performance else 0}% of the time."
+            f"\nDuring this practice, you answered correctly {round(mean([i for i in performance if i != None]) * 100) if performance else 0}% of the time."
             "\n\nPress SPACE to start the experiment.",
             settings["window"],
         )

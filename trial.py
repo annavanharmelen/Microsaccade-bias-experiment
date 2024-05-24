@@ -175,7 +175,7 @@ def single_trial(
             response = {
                 "exit_stage": frame,
                 "feedback": "you broke fixation",
-                "correct_key": float("NaN"),
+                "correct_key": None,
             }
             # Show performance (and feedback on premature key usage if necessary)
             settings["window"].flip()
