@@ -81,6 +81,7 @@ def get_response(
             "last_sample": last_sample,
             "feedback": "you broke fixation",
             "correct_key": None,
+            "exit_stage": "orientation_change",
         }
 
     response_time = time() - idle_reaction_time_start
