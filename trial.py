@@ -131,7 +131,7 @@ def single_trial(
     create_fixation_dot(settings)
 
     screens = [
-        (0, lambda: 0 / 0, None, None),  # initial one to make life easier
+        (0, lambda: 0 / 0, None, False),  # initial one to make life easier
         (ITI, lambda: create_fixation_dot(settings), None, False),
         (
             750,
