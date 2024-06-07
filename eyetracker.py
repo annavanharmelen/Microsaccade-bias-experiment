@@ -51,7 +51,7 @@ class Eyelinker:
         return self.tracker.gaze_data
 
 
-def get_trigger(frame, condition, target_position, change_direction):
+def get_trigger(frame, condition, target_position, change_direction, broke_fixation = False):
     condition_marker = {"invalid": 1, "valid": 2}[condition]
 
     if change_direction == "anticlockwise":
@@ -60,11 +60,17 @@ def get_trigger(frame, condition, target_position, change_direction):
     if target_position == "right":
         condition_marker += 4
 
-    return {
-        "stimuli_onset": "1",
-        "cue_onset": "2",
-        "orientation_change": "3",
-        "response_left": "4",
-        "response_right": "5",
-        "response_missed": "6",
-    }[frame] + str(condition_marker)
+    fixation_break = {True: "10", False: ""}[broke_fixation]
+
+    return (
+        str(fixation_break)
+        + {
+            "stimuli_onset": "1",
+            "cue_onset": "2",
+            "orientation_change": "3",
+            "response_left": "4",
+            "response_right": "5",
+            "response_missed": "6",
+        }[frame]
+        + str(condition_marker)
+    )

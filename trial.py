@@ -190,7 +190,16 @@ def single_trial(
 
         # Abort trial if fixation has been broken
         if broke_fixation:
-            response = handle_broken_fixation(frame, last_sample)
+            response = handle_broken_fixation(
+                frame,
+                last_sample,
+                trial_condition,
+                target_bar,
+                change_direction,
+                testing,
+                eyetracker,
+                settings,
+            )
             broke_fixation_break(response, settings)
 
             return {

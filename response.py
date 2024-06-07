@@ -70,7 +70,16 @@ def get_response(
 
     # Abort trial if fixation has been broken
     if broke_fixation:
-        response = handle_broken_fixation("orientation_change", last_sample)
+        response = handle_broken_fixation(
+            "orientation_change",
+            last_sample,
+            trial_condition,
+            target_bar,
+            change_direction,
+            testing,
+            eyetracker,
+            settings,
+        )
 
         return {
             "premature_pressed": True if prematurely_pressed else False,
@@ -199,7 +208,16 @@ def check_gaze_position(sample, settings):
     return allowed
 
 
-def handle_broken_fixation(frame, last_sample):
+def handle_broken_fixation(
+    frame,
+    last_sample,
+    trial_condition,
+    target_bar,
+    change_direction,
+    testing,
+    eyetracker,
+    settings,
+):
     response = {
         "exit_stage": frame,
         "feedback": "you broke fixation",
@@ -207,6 +225,12 @@ def handle_broken_fixation(frame, last_sample):
         "broke_fixation": True,
         "last_sample": last_sample,
     }
+
+    if not testing and eyetracker:
+        trigger = get_trigger(
+            frame, trial_condition, target_bar, change_direction, True
+        )
+        eyetracker.tracker.send_message(f"trig{trigger}")
 
     return response
 
