@@ -55,6 +55,7 @@ def main():
             "session_number": int,
             "age": int,
             "trials_completed": str,
+            "unbroken_trials": int,
         },
     )
     new_participants = get_participant_details(old_participants, testing)
@@ -89,6 +90,7 @@ def main():
     current_trial = 0
     finished_early = True
     block_number = 0
+    unbroken_trials = 0
 
     # Pseudo-randomly create conditions and target locations (so they're weighted)
     n_invalid_trials = N_BLOCKS * TRIALS_PER_BLOCK * (100 - PREDICTABILITY) // 100
@@ -154,6 +156,9 @@ def main():
 
                 block_performance.append(report["correct_key"])
 
+                if not report["broke_fixation"]:
+                    unbroken_trials += 1
+
             # Calculate average performance score for most recent block
             avg_score = round(mean([i for i in block_performance if i != None]) * 100)
 
@@ -200,6 +205,9 @@ def main():
         # Register how many trials this participant has completed
         new_participants.loc[new_participants.index[-1], "trials_completed"] = str(
             len(data)
+        )
+        new_participants.loc[new_participants.index[-1], "unbroken_trials"] = (
+            unbroken_trials
         )
 
         # Save participant data to existing .csv file
