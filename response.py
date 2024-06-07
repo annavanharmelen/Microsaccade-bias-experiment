@@ -9,9 +9,10 @@ made by Anna van Harmelen, 2023
 from psychopy import event
 from psychopy.core import wait
 from psychopy.hardware.keyboard import Keyboard
-from time import time
+from time import time, sleep
 from eyetracker import get_trigger
 from math import sqrt
+from stimuli import create_fixation_dot, show_text
 
 SAMPLE_DELAY = 15
 """Time to wait in between eyetracking samples in milliseconds"""
@@ -69,6 +70,8 @@ def get_response(
 
     # Abort trial if fixation has been broken
     if broke_fixation:
+        response = handle_broken_fixation("orientation_change", last_sample)
+
         return {
             "premature_pressed": True if prematurely_pressed else False,
             "premature_key": prematurely_pressed[0][0] if prematurely_pressed else None,
@@ -77,11 +80,7 @@ def get_response(
                 if prematurely_pressed
                 else None
             ),
-            "broke_fixation": broke_fixation,
-            "last_sample": last_sample,
-            "feedback": "you broke fixation",
-            "correct_key": None,
-            "exit_stage": "orientation_change",
+            **response,
         }
 
     response_time = time() - idle_reaction_time_start
@@ -198,3 +197,31 @@ def check_gaze_position(sample, settings):
         allowed = False
 
     return allowed
+
+
+def handle_broken_fixation(frame, last_sample):
+    response = {
+        "exit_stage": frame,
+        "feedback": "you broke fixation",
+        "correct_key": None,
+        "broke_fixation": True,
+        "last_sample": last_sample,
+    }
+
+    return response
+
+
+def broke_fixation_break(response, settings):
+    # Flip frame in case anything was drawn previously
+    settings["window"].flip()
+
+    # Show performance (and feedback on premature key usage if necessary)
+    create_fixation_dot(settings)
+    show_text(response["feedback"], settings["window"], (0, settings["deg2pix"](0.3)))
+    settings["window"].flip()
+    sleep(1.0)
+
+    # Give people a chance to recover fixation
+    create_fixation_dot(settings)
+    settings["window"].flip()
+    sleep(0.5)

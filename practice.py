@@ -12,7 +12,7 @@ from trial import (
     show_text,
 )
 from stimuli import make_one_gabor, create_fixation_dot
-from response import get_response, wait_for_key, check_quit
+from response import get_response, wait_for_key, check_quit, broke_fixation_break
 from psychopy import event
 from psychopy.hardware.keyboard import Keyboard
 from trial import COLOURS
@@ -63,21 +63,17 @@ def practice(testing, settings, eyetracker=None):
                 settings, testing, eyetracker, "valid", change_direction, None
             )
 
-            show_text(
-                response["feedback"],
-                settings["window"],
-                (0, settings["deg2pix"](0.3)),
-            )
-            create_fixation_dot(settings)
+            if response["broke_fixation"]:
+                broke_fixation_break(response, settings)
 
-            settings["window"].flip()
-            sleep(0.5)
-
-            if response["feedback"] == "you broke fixation":
-                sleep(0.5)
-
-                # Give people a chance to recover fixation
+            else:
+                show_text(
+                    response["feedback"],
+                    settings["window"],
+                    (0, settings["deg2pix"](0.3)),
+                )
                 create_fixation_dot(settings)
+
                 settings["window"].flip()
                 sleep(0.5)
 
