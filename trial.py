@@ -20,6 +20,7 @@ from response import (
 from stimuli import (
     create_fixation_dot,
     create_stimuli_frame,
+    show_text,
 )
 from eyetracker import get_trigger
 import random
@@ -253,9 +254,4 @@ def single_trial(
     }
 
 
-def show_text(input, window, pos=(0, 0), colour="#ffffff"):
-    textstim = visual.TextStim(
-        win=window, font="Courier New", text=input, color=colour, pos=pos, height=22
-    )
 
-    textstim.draw()

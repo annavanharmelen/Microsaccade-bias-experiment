@@ -76,3 +76,10 @@ def create_stimuli_frame(
     create_fixation_dot(settings, fix_colour)
     make_one_gabor(left_orientation, stim_colours[0], "left", settings).draw()
     make_one_gabor(right_orientation, stim_colours[1], "right", settings).draw()
+
+def show_text(input, window, pos=(0, 0), colour="#ffffff"):
+    textstim = visual.TextStim(
+        win=window, font="Courier New", text=input, color=colour, pos=pos, height=22
+    )
+
+    textstim.draw()

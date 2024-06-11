@@ -9,9 +9,8 @@ made by Anna van Harmelen, 2023
 from trial import (
     single_trial,
     generate_trial_characteristics,
-    show_text,
 )
-from stimuli import make_one_gabor, create_fixation_dot
+from stimuli import make_one_gabor, create_fixation_dot, show_text
 from response import get_response, wait_for_key, check_quit, broke_fixation_break
 from psychopy import event
 from psychopy.hardware.keyboard import Keyboard
