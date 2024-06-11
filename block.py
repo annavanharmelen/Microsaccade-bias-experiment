@@ -5,6 +5,7 @@ To run the 'microsaccade bias' experiment, see main.py.
 
 made by Anna van Harmelen, 2023
 """
+
 import random
 from stimuli import show_text
 from response import wait_for_key
@@ -89,7 +90,7 @@ def block_break(current_block, n_blocks, avg_score, settings, eyetracker):
             return True
     else:
         wait_for_key(["space"], settings["keyboard"])
-        
+
     # Make sure the keystroke from starting the experiment isn't saved
     settings["keyboard"].clearEvents()
 

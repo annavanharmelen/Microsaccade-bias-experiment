@@ -15,7 +15,7 @@ def get_participant_details(existing_participants: pd.DataFrame, testing):
     participant = random.randint(10, 99)
     while participant in existing_participants.participant_number.tolist():
         participant = random.randint(10, 99)
-    
+
     print(f"Participant number: {participant}")
 
     if not testing:
