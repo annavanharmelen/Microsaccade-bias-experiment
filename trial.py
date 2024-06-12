@@ -252,6 +252,3 @@ def single_trial(
         ),
         **response,
     }
-
-
-
