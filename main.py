@@ -160,7 +160,10 @@ def main():
                     unbroken_trials += 1
 
             # Calculate average performance score for most recent block
-            avg_score = round(mean([i for i in block_performance if i != None]) * 100)
+            if any(block_performance):
+                avg_score = round(mean([i for i in block_performance if i != None]) * 100)
+            else:
+                avg_score = 0
 
             # Break after end of block, unless it's the last block.
             # Experimenter can re-calibrate the eyetracker by pressing 'c' here.
