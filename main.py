@@ -104,9 +104,6 @@ def main():
     # Start experiment
     try:
         for block in blocks:
-            # Clear any previous keyboard events
-            settings["keyboard"].clearEvents()
-
             # Update block number
             block_number += 1
 
@@ -122,6 +119,9 @@ def main():
             for target_location, direction, trial_length, congruency in (
                 block[0:10] if testing else block
             ):
+                # Clear any previous keyboard events
+                settings["keyboard"].clearEvents()
+
                 current_trial += 1
                 start_time = time()
 
