@@ -161,7 +161,9 @@ def main():
 
             # Calculate average performance score for most recent block
             if any(block_performance):
-                avg_score = round(mean([i for i in block_performance if i != None]) * 100)
+                avg_score = round(
+                    mean([i for i in block_performance if i != None]) * 100
+                )
             else:
                 avg_score = 0
 
