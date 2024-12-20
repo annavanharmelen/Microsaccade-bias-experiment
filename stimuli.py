@@ -11,7 +11,7 @@ from numpy import zeros
 from math import sqrt
 
 ECCENTRICITY = 5
-DOT_SIZE = 0.1  # diameter of circle
+DOT_SIZE = 0.1  # radius of circle
 
 
 def create_fixation_dot(settings, colour="#eaeaea"):
